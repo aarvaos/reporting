@@ -1,0 +1,40 @@
+{
+    "name": "aarvaos/reporting",
+    "type": "library",
+    "description": "A very light logger of messages at arbitrary levels",
+    "keywords": [
+        "log",
+        "logging",
+        "logger",
+        "message",
+        "level",
+        "report"
+    ],
+    "homepage": "https://github.com/aarvaos/reporting",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Corentin FIEUX",
+            "email": "aarvaos@gmail.com",
+            "homepage": "https://github.com/aarvaos",
+            "role": "Lead Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.1"
+    },
+    "require-dev": {
+        "ext-mbstring": "*",
+        "phpunit/phpunit": "^10.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Aarvaos\\Reporting\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Aarvaos\\Reporting\\Tests\\": "tests/"
+        }
+    }
+}
