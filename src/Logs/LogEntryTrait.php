@@ -7,7 +7,6 @@ namespace Aarvaos\Reporting\Logs;
  */
 trait LogEntryTrait
 {
-
     public readonly int $level;
     public readonly string $message;
 }

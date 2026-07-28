@@ -7,10 +7,9 @@ namespace Aarvaos\Reporting\Logs;
  */
 interface LogEntryInstantiator
 {
-
     /**
      * Create an instance of the log.
-     * 
+     *
      * {@internal This method is called by a Report object record a log by parameters.}
      * @see Report::log()
      */

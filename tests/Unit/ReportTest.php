@@ -14,7 +14,6 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(Log::class)]
 class ReportTest extends TestCase
 {
-
     #[Test]
     public function testLogging()
     {
@@ -33,6 +32,7 @@ class ReportTest extends TestCase
 
         $this->assertSame(2, $report->countLogs());
         $this->assertEquals(['Hi!', 'Hello!'], $report->getLogs());
+
     }
 
     #[Test]
@@ -51,6 +51,7 @@ class ReportTest extends TestCase
                 ->log(0, 'Hi!')
                 ->log(0, 'Hi!')
         ));
+
     }
 
     #[Test]
@@ -96,6 +97,7 @@ class ReportTest extends TestCase
             ->log(-256, 'Hi -256!')
             ->log(777, 'Hi 777!')
             ->getMaxLevel());
+
     }
 
     #[Test]
@@ -141,6 +143,7 @@ class ReportTest extends TestCase
             ->log(-256, 'Hi -256!')
             ->log(777, 'Hi 777!')
             ->getMinLevel());
+
     }
 
     #[Test]
@@ -170,6 +173,7 @@ class ReportTest extends TestCase
             ->log(-256, 'Hi -256!')
             ->log(777, 'Hi 777!')
             ->getSeverity());
+
     }
 
     #[Test]
@@ -334,6 +338,7 @@ class ReportTest extends TestCase
             ->log(-256, 'Hi -256!')
             ->log(777, 'Hi 777!')
             ->hasSeverityReached(778, true));
+
     }
 
     #[Test]
@@ -455,6 +460,7 @@ class ReportTest extends TestCase
             ->log(-256, 'Hi -256!')
             ->log(777, 'Hi 777!')
             ->hasSeverityReached(-257, true));
+
     }
 
     #[Test]
@@ -486,6 +492,7 @@ class ReportTest extends TestCase
                 ->log(777, 'Hi 777!')
                 ->getLogs()
         );
+
     }
 
     #[Test]
@@ -607,6 +614,7 @@ class ReportTest extends TestCase
                 ->logCustom($l3)
                 ->getLogs([-256, 42, 777])
         );
+
     }
 
     #[Test]
@@ -849,13 +857,14 @@ class ReportTest extends TestCase
             3 => $l_p2_1,
             7 => $l_p2_2,
         ], $logs);
+
     }
 
     #[Test]
     public function testInvoke()
     {
 
-        $report = new Report;
+        $report = new Report();
 
         $report(3, 'message@3');
         $report(new Log(-1, 'message@-1'));
@@ -868,6 +877,7 @@ class ReportTest extends TestCase
         $this->assertTrue($report(2));
         $this->assertTrue($report(3));
         $this->assertFalse($report(4));
+
     }
 
     #[Test]
@@ -884,6 +894,7 @@ class ReportTest extends TestCase
         $this->assertTrue($report(2));
         $this->assertFalse($report(-3));
         $this->assertTrue($report(1));
+
     }
 
     #[Test]
@@ -901,6 +912,7 @@ class ReportTest extends TestCase
 
         $this->assertSame(-1, $report());
         $this->assertSame('CF***x', $log0->getAuthor());
+
     }
 
     #[Test]
@@ -909,7 +921,8 @@ class ReportTest extends TestCase
 
         $this->expectException(\InvalidArgumentException::class);
 
-        (new Report)(new Log(0, 'message'), 'anothermessage');
+        (new Report())(new Log(0, 'message'), 'anothermessage');
+
     }
 
     #[Test]
@@ -929,6 +942,7 @@ class ReportTest extends TestCase
         $this->assertSame(['year' => 1978, 'chapter' => 27], $log->getData());
 
         $this->assertInstanceOf(ExtendedLog::class, current((new Report(false, ExtendedLog::class))->log(0, 'message')->getLogs(0)));
+
     }
 
     #[Test]
@@ -938,6 +952,7 @@ class ReportTest extends TestCase
         $this->expectException(\DomainException::class);
 
         new Report(false, '!This\Class\Does\Not\Exists!');
+
     }
 
     #[Test]
@@ -947,6 +962,7 @@ class ReportTest extends TestCase
         $this->expectException(\DomainException::class);
 
         new Report(false, \stdClass::class);
+
     }
 
     #[Test]
@@ -971,5 +987,6 @@ class ReportTest extends TestCase
             5 => 'Message 2',
             -1 => 'Message 3',
         ], $iterated);
+
     }
 }
