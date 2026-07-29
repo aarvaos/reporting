@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 class ReportTest extends TestCase
 {
     #[Test]
-    public function testLogging()
+    public function testLogging(): void
     {
 
         $report = new Report();
@@ -36,7 +36,7 @@ class ReportTest extends TestCase
     }
 
     #[Test]
-    public function testCount()
+    public function testCount(): void
     {
 
         $this->assertSame(0, count(new Report()));
@@ -55,7 +55,7 @@ class ReportTest extends TestCase
     }
 
     #[Test]
-    public function testGetMaxLevel()
+    public function testGetMaxLevel(): void
     {
 
         $this->assertNull((new Report())->getMaxLevel());
@@ -101,7 +101,7 @@ class ReportTest extends TestCase
     }
 
     #[Test]
-    public function testGetMinLevel()
+    public function testGetMinLevel(): void
     {
 
         $this->assertNull((new Report())->getMinLevel());
@@ -147,7 +147,7 @@ class ReportTest extends TestCase
     }
 
     #[Test]
-    public function testGetSeverity()
+    public function testGetSeverity(): void
     {
 
         $this->assertNull((new Report())->getSeverity());
@@ -177,7 +177,7 @@ class ReportTest extends TestCase
     }
 
     #[Test]
-    public function testHasSeverityReached()
+    public function testHasSeverityReached(): void
     {
 
         $this->assertNull((new Report())->hasSeverityReached(1));
@@ -342,7 +342,7 @@ class ReportTest extends TestCase
     }
 
     #[Test]
-    public function testHasSeverityReached_reversed()
+    public function testHasSeverityReached_reversed(): void
     {
 
         $this->assertNull((new Report(true))->hasSeverityReached(1));
@@ -464,7 +464,7 @@ class ReportTest extends TestCase
     }
 
     #[Test]
-    public function testGetLogs()
+    public function testGetLogs(): void
     {
 
         $this->assertSame([], (new Report())->getLogs());
@@ -496,7 +496,7 @@ class ReportTest extends TestCase
     }
 
     #[Test]
-    public function testGetLogs_level()
+    public function testGetLogs_level(): void
     {
 
         $this->assertSame([], (new Report())->getLogs(1));
@@ -618,7 +618,7 @@ class ReportTest extends TestCase
     }
 
     #[Test]
-    public function testIterateLogs()
+    public function testIterateLogs(): void
     {
 
         $report = (new Report())
@@ -861,7 +861,7 @@ class ReportTest extends TestCase
     }
 
     #[Test]
-    public function testInvoke()
+    public function testInvoke(): void
     {
 
         $report = new Report();
@@ -881,7 +881,7 @@ class ReportTest extends TestCase
     }
 
     #[Test]
-    public function testInvoke_reversed()
+    public function testInvoke_reversed(): void
     {
 
         $report = (new Report(true))
@@ -898,7 +898,7 @@ class ReportTest extends TestCase
     }
 
     #[Test]
-    public function testInvoke_customLogClass()
+    public function testInvoke_customLogClass(): void
     {
 
         $report = new Report(true, CustomLog::class);
@@ -916,7 +916,7 @@ class ReportTest extends TestCase
     }
 
     #[Test]
-    public function testInvoke_error()
+    public function testInvoke_error(): void
     {
 
         $this->expectException(\InvalidArgumentException::class);
@@ -926,7 +926,7 @@ class ReportTest extends TestCase
     }
 
     #[Test]
-    public function testCustomLogClass()
+    public function testCustomLogClass(): void
     {
 
         $report = new Report(false, CustomLog::class);
@@ -946,7 +946,7 @@ class ReportTest extends TestCase
     }
 
     #[Test]
-    public function testCustomLogClass_nonExistentClass()
+    public function testCustomLogClass_nonExistentClass(): void
     {
 
         $this->expectException(\DomainException::class);
@@ -956,7 +956,7 @@ class ReportTest extends TestCase
     }
 
     #[Test]
-    public function testCustomLogClass_badClass()
+    public function testCustomLogClass_badClass(): void
     {
 
         $this->expectException(\DomainException::class);
@@ -966,7 +966,7 @@ class ReportTest extends TestCase
     }
 
     #[Test]
-    public function testIterator()
+    public function testIterator(): void
     {
 
         $report = (new Report())

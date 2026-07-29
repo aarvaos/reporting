@@ -1,0 +1,21 @@
+includes:
+    - vendor/phpstan/phpstan-deprecation-rules/rules.neon
+    - vendor/phpstan/phpstan-phpunit/extension.neon
+
+parameters:
+    level: 6
+
+    paths:
+        - src
+        - tests
+
+    excludePaths:
+        - tests/Stubs/*
+
+    treatPhpDocTypesAsCertain: false
+
+    ignoreErrors:
+        -
+            ## Purposely made for forcing extended classes to override method ::instantiate()!
+            identifier: new.static
+            path: src/Logs/Log.php

@@ -11,6 +11,7 @@ use Aarvaos\Reporting\Logs\LogEntryInstantiator;
  * Collect reported messages at arbitrary levels.
  *
  * @author Corentin FIEUX <aarvaos@gmail.com>
+ * @implements \IteratorAggregate<Log>
  */
 class Report implements \Countable, \IteratorAggregate
 {
