@@ -18,6 +18,7 @@ return (new PhpCsFixer\Config())
         // Spacing
         // 'no_blank_lines_after_class_opening' => false,
         'whitespace_after_comma_in_array' => true,
+        'object_operator_without_whitespace' => true,
         'class_attributes_separation' => [
             'elements' => [
                 'method' => 'one',
