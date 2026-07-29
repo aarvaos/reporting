@@ -22,6 +22,7 @@ $report->log(10, "Something serious happened!");
 $report->log(-4, "Something negligible happened...");
 
 $report->getSeverity(); // 10
+$report->hasSeverityReached(9); // true
 $report->hasSeverityReached(25); // false
 ```
 
