@@ -3,7 +3,7 @@ includes:
     - vendor/phpstan/phpstan-phpunit/extension.neon
 
 parameters:
-    level: 6
+    level: max
 
     paths:
         - src
@@ -13,9 +13,3 @@ parameters:
         - tests/Stubs/*
 
     treatPhpDocTypesAsCertain: false
-
-    ignoreErrors:
-        -
-            ## Purposely made for forcing extended classes to override method ::instantiate()!
-            identifier: new.static
-            path: src/Logs/Log.php

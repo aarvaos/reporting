@@ -2,7 +2,13 @@
 
 namespace Aarvaos\Reporting\Tests\Stubs;
 
-class CustomLog extends ExtendedLog
+use Aarvaos\Reporting\Log;
+
+/**
+ * @template T
+ * @extends Log<T>
+ */
+class CustomLog extends Log
 {
     public function __construct(
         string $message,
@@ -27,10 +33,5 @@ class CustomLog extends ExtendedLog
     public function getData(): ?array
     {
         return $this->data;
-    }
-
-    public static function instantiate(int $level, string $message, mixed ...$extra): static
-    {
-        return new static($message, $level, ...$extra);
     }
 }
