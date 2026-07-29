@@ -41,9 +41,9 @@ class ReportTest extends TestCase
         $this->assertEquals([new Log(0, 'Hi!'), new Log(-1, 'Hello!'), new Log(46, new \DateTime('2019-06-28'))], $report->getLogs());
 
         $logs[] = new Log(-11, 'Bonjour');
-        $report->register(end($logs));
+        $report->addLog(end($logs));
         $logs[] =  new CustomLog('', 0, 'CF***x', 'IDE', ['version' => '0.9-alpha', 'id' => .9]);
-        $report->register(end($logs));
+        $report->addLog(end($logs));
 
         $this->assertSame(5, $report->countLogs());
         $this->assertEquals([new Log(0, 'Hi!'), new Log(-1, 'Hello!'), new Log(46, new \DateTime('2019-06-28')), new Log(-11, 'Bonjour'), new CustomLog('', 0, 'CF***x', 'IDE', ['version' => '0.9-alpha', 'id' => .9])], $report->getLogs());
@@ -59,14 +59,14 @@ class ReportTest extends TestCase
         $this->assertSame(0, count(new Report()));
         $this->assertSame(3, count(
             (new Report())
-                ->register(new Log(0, 'Hi!'))
-                ->register(new Log(-256, 'Hi -256!'))
-                ->register(new Log(777, 'Hi 777!'))
+                ->addLog(new Log(0, 'Hi!'))
+                ->addLog(new Log(-256, 'Hi -256!'))
+                ->addLog(new Log(777, 'Hi 777!'))
         ));
         $this->assertSame(2, count(
             (new Report())
-                ->register(new Log(0, 'Hi!'))
-                ->register(new Log(0, 'Hi!'))
+                ->addLog(new Log(0, 'Hi!'))
+                ->addLog(new Log(0, 'Hi!'))
         ));
 
     }
@@ -77,42 +77,42 @@ class ReportTest extends TestCase
 
         $this->assertNull((new Report())->getMaxLevel());
         $this->assertSame(0, (new Report())
-            ->register(new Log(0, 'Hi!'))
+            ->addLog(new Log(0, 'Hi!'))
             ->getMaxLevel());
         $this->assertSame(777, (new Report())
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->getMaxLevel());
         $this->assertSame(-256, (new Report())
-            ->register(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
             ->getMaxLevel());
 
         $this->assertSame(0, (new Report())
-            ->register(new Log(0, 'Hi!'))
-            ->register(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(0, 'Hi!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
             ->getMaxLevel());
         $this->assertSame(0, (new Report())
-            ->register(new Log(-256, 'Hi -256!'))
-            ->register(new Log(0, 'Hi!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(0, 'Hi!'))
             ->getMaxLevel());
 
         $this->assertSame(777, (new Report())
-            ->register(new Log(0, 'Hi!'))
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(0, 'Hi!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->getMaxLevel());
         $this->assertSame(777, (new Report())
-            ->register(new Log(777, 'Hi 777!'))
-            ->register(new Log(0, 'Hi!'))
+            ->addLog(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(0, 'Hi!'))
             ->getMaxLevel());
 
         $this->assertSame(777, (new Report())
-            ->register(new Log(777, 'Hi 777!'))
-            ->register(new Log(0, 'Hi!'))
-            ->register(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(0, 'Hi!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
             ->getMaxLevel());
         $this->assertSame(777, (new Report())
-            ->register(new Log(0, 'Hi!'))
-            ->register(new Log(-256, 'Hi -256!'))
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(0, 'Hi!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->getMaxLevel());
 
     }
@@ -123,42 +123,42 @@ class ReportTest extends TestCase
 
         $this->assertNull((new Report())->getMinLevel());
         $this->assertSame(0, (new Report())
-            ->register(new Log(0, 'Hi!'))
+            ->addLog(new Log(0, 'Hi!'))
             ->getMinLevel());
         $this->assertSame(777, (new Report())
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->getMinLevel());
         $this->assertSame(-256, (new Report())
-            ->register(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
             ->getMinLevel());
 
         $this->assertSame(-256, (new Report())
-            ->register(new Log(0, 'Hi!'))
-            ->register(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(0, 'Hi!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
             ->getMinLevel());
         $this->assertSame(-256, (new Report())
-            ->register(new Log(-256, 'Hi -256!'))
-            ->register(new Log(0, 'Hi!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(0, 'Hi!'))
             ->getMinLevel());
 
         $this->assertSame(0, (new Report())
-            ->register(new Log(0, 'Hi!'))
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(0, 'Hi!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->getMinLevel());
         $this->assertSame(0, (new Report())
-            ->register(new Log(777, 'Hi 777!'))
-            ->register(new Log(0, 'Hi!'))
+            ->addLog(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(0, 'Hi!'))
             ->getMinLevel());
 
         $this->assertSame(-256, (new Report())
-            ->register(new Log(777, 'Hi 777!'))
-            ->register(new Log(0, 'Hi!'))
-            ->register(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(0, 'Hi!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
             ->getMinLevel());
         $this->assertSame(-256, (new Report())
-            ->register(new Log(0, 'Hi!'))
-            ->register(new Log(-256, 'Hi -256!'))
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(0, 'Hi!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->getMinLevel());
 
     }
@@ -170,25 +170,25 @@ class ReportTest extends TestCase
         $this->assertNull((new Report())->getSeverity());
 
         $this->assertSame(0, (new Report())
-            ->register(new Log(0, 'Hi!'))
+            ->addLog(new Log(0, 'Hi!'))
             ->getSeverity());
         $this->assertSame(777, (new Report())
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->getSeverity());
         $this->assertSame(-256, (new Report())
-            ->register(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
             ->getSeverity());
 
         $this->assertSame(777, (new Report())
-            ->register(new Log(0, 'Hi!'))
-            ->register(new Log(-256, 'Hi -256!'))
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(0, 'Hi!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->getSeverity());
 
         $this->assertSame(-256, (new Report(true))
-            ->register(new Log(0, 'Hi!'))
-            ->register(new Log(-256, 'Hi -256!'))
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(0, 'Hi!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->getSeverity());
 
     }
@@ -205,155 +205,155 @@ class ReportTest extends TestCase
         $this->assertNull((new Report())->hasSeverityReached(0, true));
 
         $this->assertTrue((new Report())
-            ->register(new Log(0, 'Hi!'))
+            ->addLog(new Log(0, 'Hi!'))
             ->hasSeverityReached(0));
         $this->assertFalse((new Report())
-            ->register(new Log(0, 'Hi!'))
+            ->addLog(new Log(0, 'Hi!'))
             ->hasSeverityReached(0, true));
         $this->assertTrue((new Report())
-            ->register(new Log(0, 'Hi!'))
+            ->addLog(new Log(0, 'Hi!'))
             ->hasSeverityReached(-1));
         $this->assertTrue((new Report())
-            ->register(new Log(0, 'Hi!'))
+            ->addLog(new Log(0, 'Hi!'))
             ->hasSeverityReached(-1, true));
         $this->assertFalse((new Report())
-            ->register(new Log(0, 'Hi!'))
+            ->addLog(new Log(0, 'Hi!'))
             ->hasSeverityReached(1));
         $this->assertFalse((new Report())
-            ->register(new Log(0, 'Hi!'))
+            ->addLog(new Log(0, 'Hi!'))
             ->hasSeverityReached(1, true));
 
         $this->assertTrue((new Report())
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->hasSeverityReached(0));
         $this->assertTrue((new Report())
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->hasSeverityReached(0, true));
         $this->assertTrue((new Report())
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->hasSeverityReached(-256));
         $this->assertTrue((new Report())
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->hasSeverityReached(-256, true));
         $this->assertTrue((new Report())
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->hasSeverityReached(777));
         $this->assertFalse((new Report())
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->hasSeverityReached(777, true));
         $this->assertTrue((new Report())
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->hasSeverityReached(776));
         $this->assertTrue((new Report())
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->hasSeverityReached(776, true));
         $this->assertFalse((new Report())
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->hasSeverityReached(778));
         $this->assertFalse((new Report())
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->hasSeverityReached(778, true));
 
         $this->assertFalse((new Report())
-            ->register(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
             ->hasSeverityReached(0));
         $this->assertFalse((new Report())
-            ->register(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
             ->hasSeverityReached(0, true));
         $this->assertFalse((new Report())
-            ->register(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
             ->hasSeverityReached(777));
         $this->assertFalse((new Report())
-            ->register(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
             ->hasSeverityReached(777, true));
         $this->assertTrue((new Report())
-            ->register(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
             ->hasSeverityReached(-256));
         $this->assertFalse((new Report())
-            ->register(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
             ->hasSeverityReached(-256, true));
         $this->assertTrue((new Report())
-            ->register(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
             ->hasSeverityReached(-257));
         $this->assertTrue((new Report())
-            ->register(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
             ->hasSeverityReached(-257, true));
         $this->assertFalse((new Report())
-            ->register(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
             ->hasSeverityReached(-255));
         $this->assertFalse((new Report())
-            ->register(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
             ->hasSeverityReached(-255, true));
 
         $this->assertTrue((new Report())
-            ->register(new Log(0, 'Hi!'))
-            ->register(new Log(-256, 'Hi -256!'))
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(0, 'Hi!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->hasSeverityReached(0));
         $this->assertTrue((new Report())
-            ->register(new Log(0, 'Hi!'))
-            ->register(new Log(-256, 'Hi -256!'))
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(0, 'Hi!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->hasSeverityReached(0, true));
         $this->assertTrue((new Report())
-            ->register(new Log(0, 'Hi!'))
-            ->register(new Log(-256, 'Hi -256!'))
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(0, 'Hi!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->hasSeverityReached(-256));
         $this->assertTrue((new Report())
-            ->register(new Log(0, 'Hi!'))
-            ->register(new Log(-256, 'Hi -256!'))
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(0, 'Hi!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->hasSeverityReached(-256, true));
         $this->assertTrue((new Report())
-            ->register(new Log(0, 'Hi!'))
-            ->register(new Log(-256, 'Hi -256!'))
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(0, 'Hi!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->hasSeverityReached(-255));
         $this->assertTrue((new Report())
-            ->register(new Log(0, 'Hi!'))
-            ->register(new Log(-256, 'Hi -256!'))
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(0, 'Hi!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->hasSeverityReached(-255, true));
         $this->assertTrue((new Report())
-            ->register(new Log(0, 'Hi!'))
-            ->register(new Log(-256, 'Hi -256!'))
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(0, 'Hi!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->hasSeverityReached(-257));
         $this->assertTrue((new Report())
-            ->register(new Log(0, 'Hi!'))
-            ->register(new Log(-256, 'Hi -256!'))
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(0, 'Hi!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->hasSeverityReached(-257, true));
         $this->assertTrue((new Report())
-            ->register(new Log(0, 'Hi!'))
-            ->register(new Log(-256, 'Hi -256!'))
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(0, 'Hi!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->hasSeverityReached(777));
         $this->assertFalse((new Report())
-            ->register(new Log(0, 'Hi!'))
-            ->register(new Log(-256, 'Hi -256!'))
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(0, 'Hi!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->hasSeverityReached(777, true));
         $this->assertTrue((new Report())
-            ->register(new Log(0, 'Hi!'))
-            ->register(new Log(-256, 'Hi -256!'))
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(0, 'Hi!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->hasSeverityReached(776));
         $this->assertTrue((new Report())
-            ->register(new Log(0, 'Hi!'))
-            ->register(new Log(-256, 'Hi -256!'))
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(0, 'Hi!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->hasSeverityReached(776, true));
         $this->assertFalse((new Report())
-            ->register(new Log(0, 'Hi!'))
-            ->register(new Log(-256, 'Hi -256!'))
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(0, 'Hi!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->hasSeverityReached(778));
         $this->assertFalse((new Report())
-            ->register(new Log(0, 'Hi!'))
-            ->register(new Log(-256, 'Hi -256!'))
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(0, 'Hi!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->hasSeverityReached(778, true));
 
     }
@@ -370,112 +370,112 @@ class ReportTest extends TestCase
         $this->assertNull((new Report(true))->hasSeverityReached(0, true));
 
         $this->assertTrue((new Report(true))
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->hasSeverityReached(777));
         $this->assertFalse((new Report(true))
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->hasSeverityReached(777, true));
         $this->assertFalse((new Report(true))
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->hasSeverityReached(776));
         $this->assertFalse((new Report(true))
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->hasSeverityReached(776, true));
         $this->assertTrue((new Report(true))
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->hasSeverityReached(778));
         $this->assertTrue((new Report(true))
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->hasSeverityReached(778, true));
 
         $this->assertTrue((new Report(true))
-            ->register(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
             ->hasSeverityReached(-256));
         $this->assertFalse((new Report(true))
-            ->register(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
             ->hasSeverityReached(-256, true));
         $this->assertFalse((new Report(true))
-            ->register(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
             ->hasSeverityReached(-257));
         $this->assertFalse((new Report(true))
-            ->register(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
             ->hasSeverityReached(-257, true));
         $this->assertTrue((new Report(true))
-            ->register(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
             ->hasSeverityReached(-255));
         $this->assertTrue((new Report(true))
-            ->register(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
             ->hasSeverityReached(-255, true));
 
         $this->assertTrue((new Report(true))
-            ->register(new Log(0, 'Hi!'))
-            ->register(new Log(-256, 'Hi -256!'))
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(0, 'Hi!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->hasSeverityReached(0));
         $this->assertTrue((new Report(true))
-            ->register(new Log(0, 'Hi!'))
-            ->register(new Log(-256, 'Hi -256!'))
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(0, 'Hi!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->hasSeverityReached(0, true));
         $this->assertTrue((new Report(true))
-            ->register(new Log(0, 'Hi!'))
-            ->register(new Log(-256, 'Hi -256!'))
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(0, 'Hi!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->hasSeverityReached(777));
         $this->assertTrue((new Report(true))
-            ->register(new Log(0, 'Hi!'))
-            ->register(new Log(-256, 'Hi -256!'))
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(0, 'Hi!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->hasSeverityReached(777, true));
         $this->assertTrue((new Report(true))
-            ->register(new Log(0, 'Hi!'))
-            ->register(new Log(-256, 'Hi -256!'))
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(0, 'Hi!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->hasSeverityReached(-256));
         $this->assertFalse((new Report(true))
-            ->register(new Log(0, 'Hi!'))
-            ->register(new Log(-256, 'Hi -256!'))
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(0, 'Hi!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->hasSeverityReached(-256, true));
         $this->assertTrue((new Report(true))
-            ->register(new Log(0, 'Hi!'))
-            ->register(new Log(-256, 'Hi -256!'))
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(0, 'Hi!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->hasSeverityReached(778));
         $this->assertTrue((new Report(true))
-            ->register(new Log(0, 'Hi!'))
-            ->register(new Log(-256, 'Hi -256!'))
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(0, 'Hi!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->hasSeverityReached(778, true));
         $this->assertTrue((new Report(true))
-            ->register(new Log(0, 'Hi!'))
-            ->register(new Log(-256, 'Hi -256!'))
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(0, 'Hi!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->hasSeverityReached(776));
         $this->assertTrue((new Report(true))
-            ->register(new Log(0, 'Hi!'))
-            ->register(new Log(-256, 'Hi -256!'))
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(0, 'Hi!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->hasSeverityReached(776, true));
         $this->assertTrue((new Report(true))
-            ->register(new Log(0, 'Hi!'))
-            ->register(new Log(-256, 'Hi -256!'))
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(0, 'Hi!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->hasSeverityReached(-255, true));
         $this->assertTrue((new Report(true))
-            ->register(new Log(0, 'Hi!'))
-            ->register(new Log(-256, 'Hi -256!'))
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(0, 'Hi!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->hasSeverityReached(-255, true));
         $this->assertFalse((new Report(true))
-            ->register(new Log(0, 'Hi!'))
-            ->register(new Log(-256, 'Hi -256!'))
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(0, 'Hi!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->hasSeverityReached(-257, true));
         $this->assertFalse((new Report(true))
-            ->register(new Log(0, 'Hi!'))
-            ->register(new Log(-256, 'Hi -256!'))
-            ->register(new Log(777, 'Hi 777!'))
+            ->addLog(new Log(0, 'Hi!'))
+            ->addLog(new Log(-256, 'Hi -256!'))
+            ->addLog(new Log(777, 'Hi 777!'))
             ->hasSeverityReached(-257, true));
 
     }
@@ -488,25 +488,25 @@ class ReportTest extends TestCase
         $this->assertEquals(
             [new Log(0, 'Hi!')],
             (new Report())
-                ->register(new Log(0, 'Hi!'))
+                ->addLog(new Log(0, 'Hi!'))
                 ->getLogs()
         );
         $this->assertEquals(
             [new Log(0, 'Hi!'), new Log(-256, 'Hi -256!'), new Log(777, 'Hi 777!')],
             (new Report())
-                ->register(new Log(0, 'Hi!'))
-                ->register(new Log(-256, 'Hi -256!'))
-                ->register(new Log(777, 'Hi 777!'))
+                ->addLog(new Log(0, 'Hi!'))
+                ->addLog(new Log(-256, 'Hi -256!'))
+                ->addLog(new Log(777, 'Hi 777!'))
                 ->getLogs()
         );
         $this->assertEquals(
             [new Log(0, 'Hi#1!'), new Log(-256, 'Hi -256!'), new Log(0, 'Hi#2!'), new Log(0, 'Hi#3!'), new Log(777, 'Hi 777!')],
             (new Report())
-                ->register(new Log(0, 'Hi#1!'))
-                ->register(new Log(-256, 'Hi -256!'))
-                ->register(new Log(0, 'Hi#2!'))
-                ->register(new Log(0, 'Hi#3!'))
-                ->register(new Log(777, 'Hi 777!'))
+                ->addLog(new Log(0, 'Hi#1!'))
+                ->addLog(new Log(-256, 'Hi -256!'))
+                ->addLog(new Log(0, 'Hi#2!'))
+                ->addLog(new Log(0, 'Hi#3!'))
+                ->addLog(new Log(777, 'Hi 777!'))
                 ->getLogs()
         );
 
@@ -530,31 +530,31 @@ class ReportTest extends TestCase
         $this->assertSame(
             [],
             (new Report())
-                ->register(new Log(0, 'Hi!'))
+                ->addLog(new Log(0, 'Hi!'))
                 ->getLogs(1)
         );
         $this->assertEquals(
             [new Log(0, 'Hi!')],
             (new Report())
-                ->register(new Log(0, 'Hi!'))
+                ->addLog(new Log(0, 'Hi!'))
                 ->getLogs(0)
         );
         $this->assertEquals(
             [new Log(-256, 'Hi -256!')],
             (new Report())
-                ->register(new Log(0, 'Hi!'))
-                ->register(new Log(-256, 'Hi -256!'))
-                ->register(new Log(777, 'Hi 777!'))
+                ->addLog(new Log(0, 'Hi!'))
+                ->addLog(new Log(-256, 'Hi -256!'))
+                ->addLog(new Log(777, 'Hi 777!'))
                 ->getLogs(-256)
         );
         $this->assertEquals(
             [new Log(0, 'Hi#1!'), new Log(0, 'Hi#2!'), new Log(0, 'Hi#3!')],
             (new Report())
-                ->register(new Log(0, 'Hi#1!'))
-                ->register(new Log(-256, 'Hi -256!'))
-                ->register(new Log(0, 'Hi#2!'))
-                ->register(new Log(0, 'Hi#3!'))
-                ->register(new Log(777, 'Hi 777!'))
+                ->addLog(new Log(0, 'Hi#1!'))
+                ->addLog(new Log(-256, 'Hi -256!'))
+                ->addLog(new Log(0, 'Hi#2!'))
+                ->addLog(new Log(0, 'Hi#3!'))
+                ->addLog(new Log(777, 'Hi 777!'))
                 ->getLogs(0)
         );
         $this->assertSame(
@@ -564,66 +564,66 @@ class ReportTest extends TestCase
                 $l3 = new Log(0, 'Hi#3!'),
             ],
             (new Report())
-                ->register($l1)
-                ->register(new Log(-256, 'Hi -256!'))
-                ->register($l2)
-                ->register($l3)
-                ->register(new Log(777, 'Hi 777!'))
+                ->addLog($l1)
+                ->addLog(new Log(-256, 'Hi -256!'))
+                ->addLog($l2)
+                ->addLog($l3)
+                ->addLog(new Log(777, 'Hi 777!'))
                 ->getLogs(0)
         );
 
         $this->assertEquals(
             [],
             (new Report())
-                ->register(new Log(0, 'Hi#1!'))
-                ->register(new Log(777, 'Hi 777!'))
-                ->register(new Log(0, 'Hi#2!'))
-                ->register(new Log(-256, 'Hi -256!'))
-                ->register(new Log(0, 'Hi#3!'))
-                ->register(new Log(777, 'Hi 777#2!'))
+                ->addLog(new Log(0, 'Hi#1!'))
+                ->addLog(new Log(777, 'Hi 777!'))
+                ->addLog(new Log(0, 'Hi#2!'))
+                ->addLog(new Log(-256, 'Hi -256!'))
+                ->addLog(new Log(0, 'Hi#3!'))
+                ->addLog(new Log(777, 'Hi 777#2!'))
                 ->getLogs([])
         );
         $this->assertEquals(
             [new Log(0, 'Hi#1!'), new Log(0, 'Hi#2!'), new Log(0, 'Hi#3!')],
             (new Report())
-                ->register(new Log(0, 'Hi#1!'))
-                ->register(new Log(777, 'Hi 777!'))
-                ->register(new Log(0, 'Hi#2!'))
-                ->register(new Log(-256, 'Hi -256!'))
-                ->register(new Log(0, 'Hi#3!'))
-                ->register(new Log(777, 'Hi 777#2!'))
+                ->addLog(new Log(0, 'Hi#1!'))
+                ->addLog(new Log(777, 'Hi 777!'))
+                ->addLog(new Log(0, 'Hi#2!'))
+                ->addLog(new Log(-256, 'Hi -256!'))
+                ->addLog(new Log(0, 'Hi#3!'))
+                ->addLog(new Log(777, 'Hi 777#2!'))
                 ->getLogs([0])
         );
         $this->assertEquals(
             [],
             (new Report())
-                ->register(new Log(0, 'Hi#1!'))
-                ->register(new Log(-256, 'Hi -256!'))
-                ->register(new Log(0, 'Hi#2!'))
-                ->register(new Log(0, 'Hi#3!'))
-                ->register(new Log(777, 'Hi 777!'))
+                ->addLog(new Log(0, 'Hi#1!'))
+                ->addLog(new Log(-256, 'Hi -256!'))
+                ->addLog(new Log(0, 'Hi#2!'))
+                ->addLog(new Log(0, 'Hi#3!'))
+                ->addLog(new Log(777, 'Hi 777!'))
                 ->getLogs([1, 2, 3])
         );
         $this->assertEquals(
             [new Log(0, 'Hi#1!'), new Log(0, 'Hi#2!'), new Log(0, 'Hi#3!')],
             (new Report())
-                ->register(new Log(0, 'Hi#1!'))
-                ->register(new Log(777, 'Hi 777!'))
-                ->register(new Log(0, 'Hi#2!'))
-                ->register(new Log(-256, 'Hi -256!'))
-                ->register(new Log(0, 'Hi#3!'))
-                ->register(new Log(777, 'Hi 777#2!'))
+                ->addLog(new Log(0, 'Hi#1!'))
+                ->addLog(new Log(777, 'Hi 777!'))
+                ->addLog(new Log(0, 'Hi#2!'))
+                ->addLog(new Log(-256, 'Hi -256!'))
+                ->addLog(new Log(0, 'Hi#3!'))
+                ->addLog(new Log(777, 'Hi 777#2!'))
                 ->getLogs([-1, 0, 1])
         );
         $this->assertEquals(
             [new Log(777, 'Hi 777!'), new Log(-256, 'Hi -256!'), new Log(777, 'Hi 777#2!')],
             (new Report())
-                ->register(new Log(0, 'Hi#1!'))
-                ->register(new Log(777, 'Hi 777!'))
-                ->register(new Log(0, 'Hi#2!'))
-                ->register(new Log(-256, 'Hi -256!'))
-                ->register(new Log(0, 'Hi#3!'))
-                ->register(new Log(777, 'Hi 777#2!'))
+                ->addLog(new Log(0, 'Hi#1!'))
+                ->addLog(new Log(777, 'Hi 777!'))
+                ->addLog(new Log(0, 'Hi#2!'))
+                ->addLog(new Log(-256, 'Hi -256!'))
+                ->addLog(new Log(0, 'Hi#3!'))
+                ->addLog(new Log(777, 'Hi 777#2!'))
                 ->getLogs([-256, 42, 777])
         );
         $this->assertSame(
@@ -633,12 +633,12 @@ class ReportTest extends TestCase
                 $l3 = new Log(777, 'Hi 777#2!'),
             ],
             (new Report())
-                ->register(new Log(0, 'Hi#1!'))
-                ->register($l1)
-                ->register(new Log(0, 'Hi#2!'))
-                ->register($l2)
-                ->register(new Log(0, 'Hi#3!'))
-                ->register($l3)
+                ->addLog(new Log(0, 'Hi#1!'))
+                ->addLog($l1)
+                ->addLog(new Log(0, 'Hi#2!'))
+                ->addLog($l2)
+                ->addLog(new Log(0, 'Hi#3!'))
+                ->addLog($l3)
                 ->getLogs([-256, 42, 777])
         );
 
@@ -660,14 +660,14 @@ class ReportTest extends TestCase
     {
 
         $report = (new Report())
-            ->register(new Log(-3, 'message#1@-3'))
-            ->register(new Log(0, 'message#1@0'))
-            ->register(new Log(-1, 'message#1@-1'))
-            ->register(new Log(2, 'message#1@2'))
-            ->register(new Log(0, 'message#2@0'))
-            ->register(new Log(-1, 'message#2@-1'))
-            ->register(new Log(1, 'message#1@1'))
-            ->register(new Log(2, 'message#2@2'));
+            ->addLog(new Log(-3, 'message#1@-3'))
+            ->addLog(new Log(0, 'message#1@0'))
+            ->addLog(new Log(-1, 'message#1@-1'))
+            ->addLog(new Log(2, 'message#1@2'))
+            ->addLog(new Log(0, 'message#2@0'))
+            ->addLog(new Log(-1, 'message#2@-1'))
+            ->addLog(new Log(1, 'message#1@1'))
+            ->addLog(new Log(2, 'message#2@2'));
 
         $this->assertEquals([
             0 => new Log(-3, 'message#1@-3'),
@@ -787,14 +787,14 @@ class ReportTest extends TestCase
         ], iterator_to_array($report->iterateLogs(above: -1, in_above: true, below: 2, in_below: true)));
 
         $report = (new Report(true))
-            ->register(new Log(-3, 'message#1@-3'))
-            ->register(new Log(0, 'message#1@0'))
-            ->register(new Log(-1, 'message#1@-1'))
-            ->register(new Log(2, 'message#1@2'))
-            ->register(new Log(0, 'message#2@0'))
-            ->register(new Log(-1, 'message#2@-1'))
-            ->register(new Log(1, 'message#1@1'))
-            ->register(new Log(2, 'message#2@2'));
+            ->addLog(new Log(-3, 'message#1@-3'))
+            ->addLog(new Log(0, 'message#1@0'))
+            ->addLog(new Log(-1, 'message#1@-1'))
+            ->addLog(new Log(2, 'message#1@2'))
+            ->addLog(new Log(0, 'message#2@0'))
+            ->addLog(new Log(-1, 'message#2@-1'))
+            ->addLog(new Log(1, 'message#1@1'))
+            ->addLog(new Log(2, 'message#2@2'));
 
         $this->assertEquals([
             3 => new Log(2, 'message#1@2'),
@@ -877,14 +877,14 @@ class ReportTest extends TestCase
         ], iterator_to_array($report->iterateLogs(above: -1, in_above: true, below: 2, in_below: true)));
 
         $report = (new Report(true))
-            ->register($l_n3_1 = new CustomLog('message#1@-3', -3))
-            ->register($l_p0_1 = new CustomLog('message#1@0', 0))
-            ->register($l_n1_1 = new CustomLog('message#1@-1', -1))
-            ->register($l_p2_1 = new CustomLog('message#1@2', 2))
-            ->register($l_p0_2 = new CustomLog('message#2@0', 0))
-            ->register($l_n1_2 = new CustomLog('message#2@-1', -1))
-            ->register($l_p1_1 = new CustomLog('message#1@1', 1))
-            ->register($l_p2_2 = new CustomLog('message#2@2', 2));
+            ->addLog($l_n3_1 = new CustomLog('message#1@-3', -3))
+            ->addLog($l_p0_1 = new CustomLog('message#1@0', 0))
+            ->addLog($l_n1_1 = new CustomLog('message#1@-1', -1))
+            ->addLog($l_p2_1 = new CustomLog('message#1@2', 2))
+            ->addLog($l_p0_2 = new CustomLog('message#2@0', 0))
+            ->addLog($l_n1_2 = new CustomLog('message#2@-1', -1))
+            ->addLog($l_p1_1 = new CustomLog('message#1@1', 1))
+            ->addLog($l_p2_2 = new CustomLog('message#2@2', 2));
 
         $logs = iterator_to_array($report->iterateLogs(Report::SORT_SEVERITY_DESC, above: -1, in_above: true, below: 2, in_below: true));
 
@@ -923,9 +923,9 @@ class ReportTest extends TestCase
     {
 
         $report = (new Report(true))
-            ->register(new Log(2, 'message@3'))
-            ->register(new Log(-2, 'message@-1'))
-            ->register(new Log(0, 'message@0'));
+            ->addLog(new Log(2, 'message@3'))
+            ->addLog(new Log(-2, 'message@-1'))
+            ->addLog(new Log(0, 'message@0'));
 
         $this->assertTrue($report(-2));
         $this->assertFalse($report(-9000));
@@ -972,9 +972,9 @@ class ReportTest extends TestCase
         $report = new Report();
         $logs[1] = $report->log(0, 'Message 1');
         $logs[2] = new Log(5, 'Message 2');
-        $report->register($logs[2]);
+        $report->addLog($logs[2]);
         $logs[3] = new Log(-1, 'Message 3');
-        $report->register($logs[3]);
+        $report->addLog($logs[3]);
 
         $iterated = [];
 

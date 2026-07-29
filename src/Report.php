@@ -53,26 +53,26 @@ class Report implements \Countable, \IteratorAggregate
      * @param int   $level      An arbitrary level to report the element at.
      * @param mixed $payload    The data of the element to log.
      * @return Log<mixed> The newly registered Log.
-     * @see Report::register() For logging custom Log objects.
+     * @see Report::addLog() For logging custom Log objects.
      */
     public function log(int $level, mixed $payload): Log
     {
 
         $log = new Log($level, $payload);
 
-        $this->register($log);
+        $this->addLog($log);
 
         return $log;
 
     }
 
     /**
-     * Register a log.
+     * Register a new log.
      *
-     * @param Log<mixed> $log The log entry object to register.
+     * @param Log<mixed> $log The log entry object to append to the Report.
      * @return static Current Report for chaining.
      */
-    public function register(Log $log): static
+    public function addLog(Log $log): static
     {
 
         $this->doRecordLog($log);
@@ -295,7 +295,7 @@ class Report implements \Countable, \IteratorAggregate
             case 0:
                 return $this->getSeverity();
             case 1:
-                return $log_level instanceof Log ? $this->register($log_level) : $this->hasSeverityReached($log_level);
+                return $log_level instanceof Log ? $this->addLog($log_level) : $this->hasSeverityReached($log_level);
             case 2:
             default:
                 /** @var int $log_level */
