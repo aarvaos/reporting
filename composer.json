@@ -1,7 +1,7 @@
 {
     "name": "aarvaos/reporting",
     "type": "library",
-    "description": "A very light logger of messages at arbitrary levels",
+    "description": "A very light & easy logger of elements at user-defined levels",
     "keywords": [
         "log",
         "logging",
