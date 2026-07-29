@@ -8,7 +8,7 @@ Whenever you need to keep track of anything happening in your code so you can au
 
 ## Install
 
-*Composer incoming!*
+Use composer `composer require aarvaos/reporting` and you're done!
 
 ## Use
 
