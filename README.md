@@ -1,5 +1,10 @@
 # _aArvaos_ - Reporting
 
+[![CI](https://img.shields.io/badge/PHPStan-level%2010-bluehttps://github.com/aarvaos/reporting/actions/workflows/ci.yml/badge.svg)](https://github.com/aarvaos/reporting/actions/workflows/ci.yml)
+[![PHPStan](https://img.shields.io/badge/PHPStan-level%2010-blue)](https://github.com/aarvaos/reporting/actions/workflows/ci.yml)
+![PHP Version](https://img.shields.io/badge/php-%3E%3D8.1-777BB4)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 A very light, handy and easy-to-use library to log and track all kind of elements you want to report.
 
 ## Concept
