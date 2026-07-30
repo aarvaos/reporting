@@ -1,9 +1,10 @@
 # _aArvaos_ - Reporting
 
-[![PHP Version](https://img.shields.io/badge/php-%3E%3D8.1-777BB4)](https://www.php.net/releases/8.1)
+[![PHP Version min](https://img.shields.io/badge/php-8.5-777BB4)](https://www.php.net/releases/8.5)
+[![PHP Version latest](https://img.shields.io/badge/php-%3E%3D8.1-777BB4)](https://www.php.net/releases/8.1)
 [![CI](https://github.com/aarvaos/reporting/actions/workflows/ci.yml/badge.svg)](https://github.com/aarvaos/reporting/actions/workflows/ci.yml)
-[![PHPStan](https://img.shields.io/badge/PHPStan-level%2010-blue)](https://github.com/aarvaos/reporting/actions/workflows/ci.yml)
-[![Latest Version](https://poser.pugx.org/aarvaos/reporting/v)](https://packagist.org/packages/aarvaos/reporting)
+[![PHPStan level 10](https://img.shields.io/badge/PHPStan-level%2010-blue)](https://github.com/aarvaos/reporting/actions/workflows/ci.yml)
+[![Packagist](https://poser.pugx.org/aarvaos/reporting/v)](https://packagist.org/packages/aarvaos/reporting)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 A very light, handy and easy-to-use library to log and track all kind of elements you want to report.
@@ -23,21 +24,17 @@ Simple use case demo:
 ```php
 
 const NEUTRAL = 0;
-const LIGHT = 1;
-const NORMAL = 5;
-const BAD = 8;
-const VERY_BAD = 9;
 const SERIOUS = 10;
 const CRITICAL = 25;
 
 $report = new \aarvaos\Report();
 
-$report->log(LIGHT, "Something light happened.");
+$report->log(1, "Something light happened.");
 $report->log(SERIOUS, "Something serious happened!");
 $report->log(-4, "Something negligible happened...");
 
 $report->getSeverity(); // 10
-$report->hasSeverityReached(VERY_BAD); // true
+$report->hasSeverityReached(9); // true
 $report->hasSeverityReached(CRITICAL); // false
 ```
 
@@ -60,7 +57,7 @@ foreach($report->iterateLogs() as $log) {
 ```php
 $report->getLogs(-4); // [Log<-4, ...>]
 
-foreach($report->iterateLogs(\aarvaos\Report::SORT_SEVERITY_ASC, below: NORMAL) as $log) {
+foreach($report->iterateLogs(\aarvaos\Report::SORT_SEVERITY_ASC, below: 5) as $log) {
 
     // $log = Log<-4, ...>,
     // $log = Log<1, ...>.
