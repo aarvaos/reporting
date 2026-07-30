@@ -1,10 +1,10 @@
 # _aArvaos_ - Reporting
 
+[![Packagist](https://img.shields.io/packagist/v/aarvaos/reporting)](https://packagist.org/packages/aarvaos/reporting)
+[![CI](https://github.com/aarvaos/reporting/actions/workflows/ci.yml/badge.svg)](https://github.com/aarvaos/reporting/actions/workflows/ci.yml)
 [![PHP Version min](https://img.shields.io/badge/php-8.5-777BB4)](https://www.php.net/releases/8.5)
 [![PHP Version latest](https://img.shields.io/badge/php-%3E%3D8.1-777BB4)](https://www.php.net/releases/8.1)
-[![CI](https://github.com/aarvaos/reporting/actions/workflows/ci.yml/badge.svg)](https://github.com/aarvaos/reporting/actions/workflows/ci.yml)
 [![PHPStan level 10](https://img.shields.io/badge/PHPStan-level%2010-blue)](https://github.com/aarvaos/reporting/actions/workflows/ci.yml)
-[![Packagist](https://poser.pugx.org/aarvaos/reporting/v)](https://packagist.org/packages/aarvaos/reporting)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 A very light, handy and easy-to-use library to log and track all kind of elements you want to report.
