@@ -285,13 +285,15 @@ class Report implements \Countable, \IteratorAggregate
     public function __invoke(int|Log $log_level = 0, string $message = ''): mixed
     {
 
-        if ($log_level instanceof Log && func_num_args() > 1) {
+        $mode = func_num_args();
+
+        if ($log_level instanceof Log && $mode > 1) {
 
             throw new \InvalidArgumentException(sprintf('Either pass a single `%s` object or its parameters.', Log::class));
 
         }
 
-        switch (func_num_args()) {
+        switch ($mode) {
             case 0:
                 return $this->getSeverity();
             case 1:
