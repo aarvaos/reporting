@@ -4,3 +4,13 @@
 /.phpunit*.cache
 
 /.php-cs-fixer.cache
+
+### IDEs default specific project folders:
+# Visual Studio Code
+/.vscode/
+# PhpStorm
+/.idea/
+# NetBeans
+/nbproject/
+# Eclipse
+/.settings/
