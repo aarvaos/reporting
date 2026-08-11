@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Aarvaos\Reporting\Events;
 
 use Aarvaos\Reporting\Log;

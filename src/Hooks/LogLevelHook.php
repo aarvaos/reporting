@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Aarvaos\Reporting\Hooks;
 
 use Aarvaos\Reporting\Events\ReportingLogEvent;
