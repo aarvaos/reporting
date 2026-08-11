@@ -75,7 +75,7 @@ You have various hooks classes allowing to handle multiple log reporting context
 ```php
 $report = new \Aarvaos\Reporting\HookableReport();
 
-$report->registerHook(new ReportSeverityReachHook(10, after: static function(\Aarvaos\Reporting\Events\AfterReportingLogEvent $event): never {
+$report->registerHook(new \Aarvaos\Reporting\Hooks\ReportSeverityReachHook(10, after: static function(\Aarvaos\Reporting\Events\AfterReportingLogEvent $event): never {
     throw new \RuntimeException($event->log->getPayload());
 }));
 
