@@ -8,7 +8,7 @@ namespace Aarvaos\Reporting;
  * Collect reported messages at arbitrary levels.
  *
  * @author Corentin FIEUX <aarvaos@gmail.com>
- * @implements \IteratorAggregate<Log>
+ * @implements \IteratorAggregate<Log<mixed>>
  */
 class Report implements \Countable, \IteratorAggregate
 {
