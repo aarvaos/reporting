@@ -53,7 +53,7 @@ class HookableReport extends Report
 
     }
 
-    #[\Override]
+    // #[\Override]
     protected function doReportLog(Log $log): void
     {
 
