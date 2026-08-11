@@ -4,7 +4,7 @@ namespace Aarvaos\Reporting;
 
 use Aarvaos\Reporting\Events\EventsFactory;
 use Aarvaos\Reporting\Events\ReportingLogEvent;
-use Aarvaos\Reporting\Hooks\HookReportingInterface;
+use Aarvaos\Reporting\Hooks\ReportingHookInterface;
 
 /**
  * Hookable version of a report allowing to handle logs reporting.
@@ -13,7 +13,7 @@ use Aarvaos\Reporting\Hooks\HookReportingInterface;
  */
 class HookableReport extends Report
 {
-    /** @var HookReportingInterface[] */
+    /** @var ReportingHookInterface[] */
     private array $hooks = [];
 
     /**
@@ -21,7 +21,7 @@ class HookableReport extends Report
      *
      * @return static Current Report for chaining.
      */
-    public function registerHook(HookReportingInterface $hook): static
+    public function registerHook(ReportingHookInterface $hook): static
     {
 
         $this->hooks[] = $hook;
@@ -59,7 +59,7 @@ class HookableReport extends Report
 
         $event = new ReportingLogEvent($log, $this->getSeverity(), $this->simulateSeverityAfter($log), $this);
 
-        $hooks = array_filter($this->hooks, function (HookReportingInterface $hook) use ($event): bool {
+        $hooks = array_filter($this->hooks, function (ReportingHookInterface $hook) use ($event): bool {
 
             return $hook->shouldHook($event);
 

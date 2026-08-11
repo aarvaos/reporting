@@ -12,13 +12,13 @@ use PHPUnit\Metadata\After;
  *
  * @author Corentin FIEUX <aarvaos@gmail.com>
  */
-abstract class AbstractCallbackHookReporting implements HookReportingInterface
+abstract class AbstractCallbackHookReporting implements ReportingHookInterface
 {
     /**
      * @param \Closure(BeforeReportingLogEvent): void|null  $before (optional) Callback executed before actually reporting the log ; it receives the corresponding event as argument.
      * @param \Closure(AfterReportingLogEvent): void|null   $after  (optional) Callback executed after actually reporting the log ; it receives the corresponding event as argument.
-     * @see HookReportingInterface::beforeReporting()
-     * @see HookReportingInterface::afterReporting()
+     * @see ReportingHookInterface::beforeReporting()
+     * @see ReportingHookInterface::afterReporting()
      */
     public function __construct(
         protected readonly ?\Closure $before = null,

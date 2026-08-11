@@ -13,15 +13,15 @@ use Aarvaos\Reporting\Report;
  *
  * @author Corentin FIEUX <aarvaos@gmail.com>
  */
-interface HookReportingInterface
+interface ReportingHookInterface
 {
     /**
      * The function to check if the hook's methods should be applied in the context.
      *
      * @param ReportingLogEvent $event The event corresponding to the context of the registration of a log in a report.
      * @return bool Whether or not to call the before/after handlers on addition of the log to the report in the given context.
-     * @see HookReportingInterface::beforeReporting()
-     * @see HookReportingInterface::afterReporting()
+     * @see ReportingHook::beforeReporting()
+     * @see ReportingHook::afterReporting()
      */
     public function shouldHook(ReportingLogEvent $event): bool;
 

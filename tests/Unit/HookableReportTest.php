@@ -4,6 +4,7 @@ namespace Aarvaos\Reporting\Tests\Unit;
 
 use Aarvaos\Reporting\Events\AfterReportingLogEvent;
 use Aarvaos\Reporting\Events\BeforeReportingLogEvent;
+use Aarvaos\Reporting\Events\EventsFactory;
 use Aarvaos\Reporting\Events\ReportingLogEvent;
 use Aarvaos\Reporting\HookableReport;
 use Aarvaos\Reporting\Hooks\AbstractCallbackHookReporting;
@@ -18,6 +19,7 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(ReportingLogEvent::class)]
 #[CoversClass(BeforeReportingLogEvent::class)]
 #[CoversClass(AfterReportingLogEvent::class)]
+#[CoversClass(EventsFactory::class)]
 #[CoversClass(AbstractCallbackHookReporting::class)]
 #[CoversClass(LogLevelHook::class)]
 class HookableReportTest extends TestCase
