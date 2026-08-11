@@ -17,11 +17,17 @@ class HookableReport extends Report
     /** @var HookReportingInterface[] */
     private array $hooks = [];
 
-    /** Register a hook handling some event implying log recorded by this report. */
-    public function registerHook(HookReportingInterface $hook): void
+    /**
+     * Register a hook handling some event implying log recorded by this report.
+     *
+     * @return static Current Report for chaining.
+     */
+    public function registerHook(HookReportingInterface $hook): static
     {
 
         $this->hooks[] = $hook;
+
+        return $this;
 
     }
 
@@ -65,6 +71,12 @@ class HookableReport extends Report
         foreach ($hooks as $hook) {
 
             $hook->beforeReporting($beforeEvent);
+
+        }
+
+        if ($beforeEvent->isCancelled()) {
+
+            return;
 
         }
 

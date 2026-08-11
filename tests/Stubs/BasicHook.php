@@ -7,11 +7,11 @@ use Aarvaos\Reporting\Hooks\AbstractCallbackHookReporting;
 
 class BasicHook extends AbstractCallbackHookReporting
 {
-    /** @param \Closure(ReportingLogEvent): bool $apply */
+    /** @param bool|\Closure(ReportingLogEvent): bool $apply */
     public function __construct(
-        public \Closure $apply,
         ?\Closure $before = null,
         ?\Closure  $after = null,
+        public bool|\Closure $apply = true,
     ) {
 
         parent::__construct($before, $after);
@@ -21,7 +21,7 @@ class BasicHook extends AbstractCallbackHookReporting
     public function shouldHook(ReportingLogEvent $event): bool
     {
 
-        return ($this->apply)($event);
+        return is_callable($this->apply) ? call_user_func($this->apply, $event) : $this->apply;
 
     }
 }

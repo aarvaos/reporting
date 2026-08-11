@@ -35,16 +35,6 @@ class HookableReportTest extends TestCase
         $expectedSeverityAfter = null;
 
         $hookableReport->registerHook(new BasicHook(
-            function (ReportingLogEvent $event) use (&$addedLog, &$expectedSeverityBefore, &$expectedSeverityAfter, &$hookableReport): bool {
-
-                $this->assertSame($addedLog, $event->log);
-                $this->assertSame($expectedSeverityBefore, $event->initialSeverity);
-                $this->assertSame($expectedSeverityAfter, $event->finalSeverity);
-                $this->assertSame($hookableReport, $event->report);
-
-                return true;
-
-            },
             function (BeforeReportingLogEvent $event) use (&$addedLog, &$expectedSeverityAfter, &$hookableReport): void {
 
                 $this->assertSame($addedLog, $event->log);
@@ -58,7 +48,17 @@ class HookableReportTest extends TestCase
                 $this->assertSame($expectedSeverityBefore, $event->initialSeverity);
                 $this->assertSame($hookableReport, $event->report);
 
-            }
+            },
+            function (ReportingLogEvent $event) use (&$addedLog, &$expectedSeverityBefore, &$expectedSeverityAfter, &$hookableReport): bool {
+
+                $this->assertSame($addedLog, $event->log);
+                $this->assertSame($expectedSeverityBefore, $event->initialSeverity);
+                $this->assertSame($expectedSeverityAfter, $event->finalSeverity);
+                $this->assertSame($hookableReport, $event->report);
+
+                return true;
+
+            },
         ));
 
         $expectedSeverityBefore = null;
@@ -92,16 +92,6 @@ class HookableReportTest extends TestCase
         $expectedSeverityAfter = null;
 
         $hookableReport->registerHook(new BasicHook(
-            function (ReportingLogEvent $event) use (&$addedLog, &$expectedSeverityBefore, &$expectedSeverityAfter, &$hookableReport): bool {
-
-                $this->assertSame($addedLog, $event->log);
-                $this->assertSame($expectedSeverityBefore, $event->initialSeverity);
-                $this->assertSame($expectedSeverityAfter, $event->finalSeverity);
-                $this->assertSame($hookableReport, $event->report);
-
-                return true;
-
-            },
             function (BeforeReportingLogEvent $event) use (&$addedLog, &$expectedSeverityAfter, &$hookableReport): void {
 
                 $this->assertSame($addedLog, $event->log);
@@ -115,7 +105,17 @@ class HookableReportTest extends TestCase
                 $this->assertSame($expectedSeverityBefore, $event->initialSeverity);
                 $this->assertSame($hookableReport, $event->report);
 
-            }
+            },
+            function (ReportingLogEvent $event) use (&$addedLog, &$expectedSeverityBefore, &$expectedSeverityAfter, &$hookableReport): bool {
+
+                $this->assertSame($addedLog, $event->log);
+                $this->assertSame($expectedSeverityBefore, $event->initialSeverity);
+                $this->assertSame($expectedSeverityAfter, $event->finalSeverity);
+                $this->assertSame($hookableReport, $event->report);
+
+                return true;
+
+            },
         ));
 
         $expectedSeverityBefore = null;
@@ -149,15 +149,15 @@ class HookableReportTest extends TestCase
         $apply = false;
 
         $report->registerHook(new BasicHook(
-            static function () use (&$apply): bool {
-                return $apply;
-            },
             static function () use (&$before): void {
                 $before = true;
             },
             static function () use (&$after): void {
                 $after = true;
-            }
+            },
+            static function () use (&$apply): bool {
+                return $apply;
+            },
         ));
 
         $before = $after = false;
@@ -181,6 +181,41 @@ class HookableReportTest extends TestCase
         $this->assertTrue($before);
         /** @phpstan-ignore method.impossibleType */
         $this->assertTrue($after);
+
+    }
+
+    #[Test]
+    public function testHookCanceled(): void
+    {
+
+        $after = $before = 0;
+
+        $report = (new HookableReport())
+        ->registerHook(new BasicHook(
+            static function (BeforeReportingLogEvent $event) use (&$before): void {
+                ++$before;
+                $event->cancel();
+            },
+            static function () use (&$after): void {
+                ++$after;
+            },
+        ))
+        ->registerHook(new BasicHook(
+            function (BeforeReportingLogEvent $event) use (&$before): void {
+                ++$before;
+                $this->assertTrue($event->isCancelled());
+            },
+            static function () use (&$after): void {
+                ++$after;
+            },
+        ));
+
+        $report->log(0, 'message');
+
+        $this->assertSame(0, $report->countLogs());
+        $this->assertSame([], $report->getLogs());
+        $this->assertSame(2, $before);
+        $this->assertSame(0, $after);
 
     }
 
