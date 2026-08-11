@@ -5,8 +5,6 @@ namespace Aarvaos\Reporting\Hooks;
 use Aarvaos\Reporting\Events\AfterReportingLogEvent;
 use Aarvaos\Reporting\Events\BeforeReportingLogEvent;
 use Aarvaos\Reporting\Events\ReportingLogEvent;
-use Aarvaos\Reporting\Log;
-use Aarvaos\Reporting\Report;
 
 /**
  * Interface of any hook registered at a (hookable) report.

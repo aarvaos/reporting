@@ -4,8 +4,6 @@ namespace Aarvaos\Reporting\Hooks;
 
 use Aarvaos\Reporting\Events\AfterReportingLogEvent;
 use Aarvaos\Reporting\Events\BeforeReportingLogEvent;
-use Aarvaos\Reporting\Log;
-use PHPUnit\Metadata\After;
 
 /**
  * Base implementation of a hook by passing callbacks.
