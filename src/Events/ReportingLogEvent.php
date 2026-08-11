@@ -24,7 +24,5 @@ class ReportingLogEvent
         public readonly int $finalSeverity,
         public readonly Report $report,
     ) {
-
-
     }
 }

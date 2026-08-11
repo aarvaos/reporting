@@ -2,8 +2,7 @@
 
 namespace Aarvaos\Reporting;
 
-use Aarvaos\Reporting\Events\AfterReportingLogEvent;
-use Aarvaos\Reporting\Events\BeforeReportingLogEvent;
+use Aarvaos\Reporting\Events\EventsFactory;
 use Aarvaos\Reporting\Events\ReportingLogEvent;
 use Aarvaos\Reporting\Hooks\HookReportingInterface;
 
@@ -66,7 +65,7 @@ class HookableReport extends Report
 
         });
 
-        $beforeEvent = new BeforeReportingLogEvent($event->log, $event->initialSeverity, $event->finalSeverity, $event->report);
+        $beforeEvent = EventsFactory::beforeFromReportingLog($event);
 
         foreach ($hooks as $hook) {
 
@@ -82,7 +81,7 @@ class HookableReport extends Report
 
         parent::doReportLog($log);
 
-        $afterEvent = new AfterReportingLogEvent($event->log, $event->initialSeverity, $event->finalSeverity, $event->report);
+        $afterEvent = EventsFactory::afterFromReportingLog($event);
 
         foreach ($hooks as $hook) {
 
