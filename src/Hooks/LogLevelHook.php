@@ -2,8 +2,7 @@
 
 namespace Aarvaos\Reporting\Hooks;
 
-use Aarvaos\Reporting\HookableReport;
-use Aarvaos\Reporting\Log;
+use Aarvaos\Reporting\Events\ReportingLogEvent;
 
 /**
  * Hook all logs at a given level.
@@ -23,10 +22,10 @@ class LogLevelHook extends AbstractCallbackHookReporting
 
     }
 
-    public function shouldHook(Log $log, ?int $currentSeverity, int $nextSeverity, HookableReport $report): bool
+    public function shouldHook(ReportingLogEvent $event): bool
     {
 
-        return $log->level === $this->level;
+        return $event->log->level === $this->level;
 
     }
 }

@@ -42,7 +42,7 @@ class ReportTest extends TestCase
 
         $logs[] = new Log(-11, 'Bonjour');
         $report->addLog(end($logs));
-        $logs[] =  new CustomLog('', 0, 'CF***x', 'IDE', ['version' => '0.9-alpha', 'id' => .9]);
+        $logs[] = new CustomLog('', 0, 'CF***x', 'IDE', ['version' => '0.9-alpha', 'id' => .9]);
         $report->addLog(end($logs));
 
         $this->assertSame(5, $report->countLogs());

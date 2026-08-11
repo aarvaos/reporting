@@ -2,8 +2,10 @@
 
 namespace Aarvaos\Reporting\Hooks;
 
-use Aarvaos\Reporting\HookableReport;
+use Aarvaos\Reporting\Events\AfterReportingLogEvent;
+use Aarvaos\Reporting\Events\BeforeReportingLogEvent;
 use Aarvaos\Reporting\Log;
+use PHPUnit\Metadata\After;
 
 /**
  * Base implementation of a hook by passing callbacks.
@@ -13,16 +15,8 @@ use Aarvaos\Reporting\Log;
 abstract class AbstractCallbackHookReporting implements HookReportingInterface
 {
     /**
-     * @param \Closure(Log<mixed>, int, HookableReport): void|null     $before (optional) Callback executed before actually reporting the log.
-     *                                                                          The callback receives the following parameters:
-     *                                                                          - the log being reported;
-     *                                                                          - the expected severity of the report after addition of the log;
-     *                                                                          - the report where the log will be added to;
-     * @param \Closure(Log<mixed>, ?int, HookableReport): void|null    $after  (optional) Callback executed after actually reporting the log.
-     *                                                                          The callback receives the following parameters:
-     *                                                                          - the log being reported;
-     *                                                                          - the previous severity of the report before addition of the log;
-     *                                                                          - the report where the log has been added to;
+     * @param \Closure(BeforeReportingLogEvent): void|null  $before (optional) Callback executed before actually reporting the log ; it receives the corresponding event as argument.
+     * @param \Closure(AfterReportingLogEvent): void|null   $after  (optional) Callback executed after actually reporting the log ; it receives the corresponding event as argument.
      * @see HookReportingInterface::beforeReporting()
      * @see HookReportingInterface::afterReporting()
      */
@@ -32,23 +26,23 @@ abstract class AbstractCallbackHookReporting implements HookReportingInterface
     ) {
     }
 
-    public function beforeReporting(Log $log, int $severityAfter, HookableReport $report): void
+    public function beforeReporting(BeforeReportingLogEvent $event): void
     {
 
         if ($this->before) {
 
-            ($this->before)($log, $severityAfter, $report);
+            ($this->before)($event);
 
         }
 
     }
 
-    public function afterReporting(Log $log, ?int $severityBefore, HookableReport $report): void
+    public function afterReporting(AfterReportingLogEvent $event): void
     {
 
         if ($this->after) {
 
-            ($this->after)($log, $severityBefore, $report);
+            ($this->after)($event);
 
         }
 

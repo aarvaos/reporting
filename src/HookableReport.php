@@ -2,6 +2,9 @@
 
 namespace Aarvaos\Reporting;
 
+use Aarvaos\Reporting\Events\AfterReportingLogEvent;
+use Aarvaos\Reporting\Events\BeforeReportingLogEvent;
+use Aarvaos\Reporting\Events\ReportingLogEvent;
 use Aarvaos\Reporting\Hooks\HookReportingInterface;
 
 /**
@@ -19,35 +22,6 @@ class HookableReport extends Report
     {
 
         $this->hooks[] = $hook;
-
-    }
-
-    #[\Override]
-    protected function doReportLog(Log $log): void
-    {
-
-        $currentSeverity = $this->getSeverity();
-        $nextSeverity = $this->simulateSeverityAfter($log);
-
-        $hooks = array_filter($this->hooks, function (HookReportingInterface $hook) use ($log, $currentSeverity, $nextSeverity): bool {
-
-            return $hook->shouldHook($log, $currentSeverity, $nextSeverity, $this);
-
-        });
-
-        foreach ($hooks as $hook) {
-
-            $hook->beforeReporting($log, $nextSeverity, $this);
-
-        }
-
-        parent::doReportLog($log);
-
-        foreach ($hooks as $hook) {
-
-            $hook->afterReporting($log, $currentSeverity, $this);
-
-        }
 
     }
 
@@ -71,6 +45,38 @@ class HookableReport extends Report
         }
 
         return max($log->level, $this->getMaxLevel());
+
+    }
+
+    #[\Override]
+    protected function doReportLog(Log $log): void
+    {
+
+        $event = new ReportingLogEvent($log, $this->getSeverity(), $this->simulateSeverityAfter($log), $this);
+
+        $hooks = array_filter($this->hooks, function (HookReportingInterface $hook) use ($event): bool {
+
+            return $hook->shouldHook($event);
+
+        });
+
+        $beforeEvent = new BeforeReportingLogEvent($event->log, $event->initialSeverity, $event->finalSeverity, $event->report);
+
+        foreach ($hooks as $hook) {
+
+            $hook->beforeReporting($beforeEvent);
+
+        }
+
+        parent::doReportLog($log);
+
+        $afterEvent = new AfterReportingLogEvent($event->log, $event->initialSeverity, $event->finalSeverity, $event->report);
+
+        foreach ($hooks as $hook) {
+
+            $hook->afterReporting($afterEvent);
+
+        }
 
     }
 }

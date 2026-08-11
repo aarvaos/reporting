@@ -2,8 +2,11 @@
 
 namespace Aarvaos\Reporting\Hooks;
 
-use Aarvaos\Reporting\HookableReport;
+use Aarvaos\Reporting\Events\AfterReportingLogEvent;
+use Aarvaos\Reporting\Events\BeforeReportingLogEvent;
+use Aarvaos\Reporting\Events\ReportingLogEvent;
 use Aarvaos\Reporting\Log;
+use Aarvaos\Reporting\Report;
 
 /**
  * Interface of any hook registered at a (hookable) report.
@@ -15,29 +18,20 @@ interface HookReportingInterface
     /**
      * The function to check if the hook's methods should be applied in the context.
      *
-     * @param Log<mixed>        $log                The log being added to the report.
-     * @param int               $currentSeverity    The current severity of the report before addition of the log.
-     * @param int               $nextSeverity       The expected severity of the report after addition of the log.
-     * @param HookableReport    $report             The report to which the log should be added.
+     * @param ReportingLogEvent $event The event corresponding to the context of the registration of a log in a report.
      * @return bool Whether or not to call the before/after handlers on addition of the log to the report in the given context.
+     * @see HookReportingInterface::beforeReporting()
+     * @see HookReportingInterface::afterReporting()
      */
-    public function shouldHook(Log $log, ?int $currentSeverity, int $nextSeverity, HookableReport $report): bool;
+    public function shouldHook(ReportingLogEvent $event): bool;
 
     /**
      * Handler called before the log is actually added to the report.
-     *
-     * @param Log<mixed>        $log            The log being added to the report.
-     * @param int               $severityAfter  The anticipated severity of the report after addition of the log.
-     * @param HookableReport    $report         The report to which the log is added.
      */
-    public function beforeReporting(Log $log, int $severityAfter, HookableReport $report): void;
+    public function beforeReporting(BeforeReportingLogEvent $event): void;
 
     /**
-     * Handler called after the log is actually added to the report.
-     *
-     * @param Log<mixed>        $log            The log being added to the report.
-     * @param int               $severityBefore The previous severity of the report before addition of the log.
-     * @param HookableReport    $report         The report to which the log is added.
+     * Handler called after the log has been actually added to the report.
      */
-    public function afterReporting(Log $log, ?int $severityBefore, HookableReport $report): void;
+    public function afterReporting(AfterReportingLogEvent $event): void;
 }

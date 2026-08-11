@@ -2,6 +2,9 @@
 
 namespace Aarvaos\Reporting\Tests\Unit;
 
+use Aarvaos\Reporting\Events\AfterReportingLogEvent;
+use Aarvaos\Reporting\Events\BeforeReportingLogEvent;
+use Aarvaos\Reporting\Events\ReportingLogEvent;
 use Aarvaos\Reporting\HookableReport;
 use Aarvaos\Reporting\Hooks\AbstractCallbackHookReporting;
 use Aarvaos\Reporting\Hooks\LogLevelHook;
@@ -12,6 +15,9 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(HookableReport::class)]
+#[CoversClass(ReportingLogEvent::class)]
+#[CoversClass(BeforeReportingLogEvent::class)]
+#[CoversClass(AfterReportingLogEvent::class)]
 #[CoversClass(AbstractCallbackHookReporting::class)]
 #[CoversClass(LogLevelHook::class)]
 class HookableReportTest extends TestCase
@@ -29,28 +35,28 @@ class HookableReportTest extends TestCase
         $expectedSeverityAfter = null;
 
         $hookableReport->registerHook(new BasicHook(
-            function (Log $log, ?int $currentSeverity, int $nextSeverity, HookableReport $report) use (&$addedLog, &$expectedSeverityBefore, &$expectedSeverityAfter, &$hookableReport): bool {
+            function (ReportingLogEvent $event) use (&$addedLog, &$expectedSeverityBefore, &$expectedSeverityAfter, &$hookableReport): bool {
 
-                $this->assertSame($addedLog, $log);
-                $this->assertSame($expectedSeverityBefore, $currentSeverity);
-                $this->assertSame($expectedSeverityAfter, $nextSeverity);
-                $this->assertSame($hookableReport, $report);
+                $this->assertSame($addedLog, $event->log);
+                $this->assertSame($expectedSeverityBefore, $event->initialSeverity);
+                $this->assertSame($expectedSeverityAfter, $event->finalSeverity);
+                $this->assertSame($hookableReport, $event->report);
 
                 return true;
 
             },
-            function (Log $log, int $severityAfter, HookableReport $report) use (&$addedLog, &$expectedSeverityAfter, &$hookableReport): void {
+            function (BeforeReportingLogEvent $event) use (&$addedLog, &$expectedSeverityAfter, &$hookableReport): void {
 
-                $this->assertSame($addedLog, $log);
-                $this->assertSame($expectedSeverityAfter, $severityAfter);
-                $this->assertSame($report, $hookableReport);
+                $this->assertSame($addedLog, $event->log);
+                $this->assertSame($expectedSeverityAfter, $event->finalSeverity);
+                $this->assertSame($hookableReport, $event->report);
 
             },
-            function (Log $log, ?int $severityBefore, HookableReport $report) use (&$addedLog, &$expectedSeverityBefore, &$hookableReport): void {
+            function (AfterReportingLogEvent $event) use (&$addedLog, &$expectedSeverityBefore, &$hookableReport): void {
 
-                $this->assertSame($addedLog, $log);
-                $this->assertSame($expectedSeverityBefore, $severityBefore);
-                $this->assertSame($report, $hookableReport);
+                $this->assertSame($addedLog, $event->log);
+                $this->assertSame($expectedSeverityBefore, $event->initialSeverity);
+                $this->assertSame($hookableReport, $event->report);
 
             }
         ));
@@ -86,28 +92,28 @@ class HookableReportTest extends TestCase
         $expectedSeverityAfter = null;
 
         $hookableReport->registerHook(new BasicHook(
-            function (Log $log, ?int $currentSeverity, int $nextSeverity, HookableReport $report) use (&$addedLog, &$expectedSeverityBefore, &$expectedSeverityAfter, &$hookableReport): bool {
+            function (ReportingLogEvent $event) use (&$addedLog, &$expectedSeverityBefore, &$expectedSeverityAfter, &$hookableReport): bool {
 
-                $this->assertSame($addedLog, $log);
-                $this->assertSame($expectedSeverityBefore, $currentSeverity);
-                $this->assertSame($expectedSeverityAfter, $nextSeverity);
-                $this->assertSame($report, $hookableReport);
+                $this->assertSame($addedLog, $event->log);
+                $this->assertSame($expectedSeverityBefore, $event->initialSeverity);
+                $this->assertSame($expectedSeverityAfter, $event->finalSeverity);
+                $this->assertSame($hookableReport, $event->report);
 
                 return true;
 
             },
-            function (Log $log, int $severityAfter, HookableReport $report) use (&$addedLog, &$expectedSeverityAfter, &$hookableReport): void {
+            function (BeforeReportingLogEvent $event) use (&$addedLog, &$expectedSeverityAfter, &$hookableReport): void {
 
-                $this->assertSame($addedLog, $log);
-                $this->assertSame($expectedSeverityAfter, $severityAfter);
-                $this->assertSame($report, $hookableReport);
+                $this->assertSame($addedLog, $event->log);
+                $this->assertSame($expectedSeverityAfter, $event->finalSeverity);
+                $this->assertSame($hookableReport, $event->report);
 
             },
-            function (Log $log, ?int $severityBefore, HookableReport $report) use (&$addedLog, &$expectedSeverityBefore, &$hookableReport): void {
+            function (AfterReportingLogEvent $event) use (&$addedLog, &$expectedSeverityBefore, &$hookableReport): void {
 
-                $this->assertSame($addedLog, $log);
-                $this->assertSame($expectedSeverityBefore, $severityBefore);
-                $this->assertSame($report, $hookableReport);
+                $this->assertSame($addedLog, $event->log);
+                $this->assertSame($expectedSeverityBefore, $event->initialSeverity);
+                $this->assertSame($hookableReport, $event->report);
 
             }
         ));
