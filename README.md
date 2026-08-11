@@ -11,7 +11,7 @@ A very light, handy and easy-to-use library to log and track all kind of element
 
 ## Concept
 
-Whenever you need to keep track of anything happening in your code so you can audit at a later stage, you may use a `aarvaos\Report` object!
+Whenever you need to keep track of anything happening in your code so you can audit at a later stage, you may use a `Aarvaos\Reporting\Report` object!
 
 ## Install
 
@@ -27,7 +27,7 @@ const NEUTRAL = 0;
 const SERIOUS = 10;
 const CRITICAL = 25;
 
-$report = new \aarvaos\Report();
+$report = new \Aarvaos\Reporting\Report();
 
 $report->log(1, "Something light happened.");
 $report->log(SERIOUS, "Something serious happened!");
@@ -57,7 +57,7 @@ foreach($report->iterateLogs() as $log) {
 ```php
 $report->getLogs(-4); // [Log<-4, ...>]
 
-foreach($report->iterateLogs(\aarvaos\Report::SORT_SEVERITY_ASC, below: 5) as $log) {
+foreach($report->iterateLogs(\Aarvaos\Reporting\Report::SORT_SEVERITY_ASC, below: 5) as $log) {
 
     // $log = Log<-4, ...>,
     // $log = Log<1, ...>.
