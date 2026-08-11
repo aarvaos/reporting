@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Aarvaos\Reporting;
 
 /**
- * Collect reported messages at arbitrary levels.
+ * Collect reported elements at arbitrary levels.
  *
  * @author Corentin FIEUX <aarvaos@gmail.com>
  * @implements \IteratorAggregate<Log<mixed>>
@@ -302,7 +302,7 @@ class Report implements \Countable, \IteratorAggregate
      * - 1 Log / 2: store the log data.
      *
      * @param int|Log<mixed>    $log_level  (optional) Either the severity to check reaching (as an integer) ; or the level of the log to store / directly the Log object.
-     * @param string            $message    (optional) The message of the log to store.
+     * @param mixed             $payload    (optional) The additionnal data of the log to store.
      * @return mixed Depending of the parameters:
      *               - 0: the current severity as an integer or null if no logging have been performed yet,
      *               - 1 integer: a boolean indicating whether the passed severity has been reached,
@@ -312,7 +312,7 @@ class Report implements \Countable, \IteratorAggregate
      * @see Report::hasSeverityReached()
      * @see Report::log()
      */
-    public function __invoke(int|Log $log_level = 0, string $message = ''): mixed
+    public function __invoke(int|Log $log_level = 0, mixed $payload = ''): mixed
     {
 
         $mode = func_num_args();
@@ -333,7 +333,7 @@ class Report implements \Countable, \IteratorAggregate
             case 2:
             default:
                 /** @var int $log_level */
-                return $this->log($log_level, $message);
+                return $this->log($log_level, $payload);
         }
 
     }
