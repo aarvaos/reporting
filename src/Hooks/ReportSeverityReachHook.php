@@ -26,6 +26,7 @@ class ReportSeverityReachHook extends AbstractCallbackHookReporting
 
     }
 
+    // #[\Override]
     public function shouldHook(ReportingLogEvent $event): bool
     {
 

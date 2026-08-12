@@ -24,6 +24,7 @@ abstract class AbstractCallbackHookReporting implements ReportingHookInterface
     ) {
     }
 
+    // #[\Override]
     public function beforeReporting(BeforeReportingLogEvent $event): void
     {
 
@@ -35,6 +36,7 @@ abstract class AbstractCallbackHookReporting implements ReportingHookInterface
 
     }
 
+    // #[\Override]
     public function afterReporting(AfterReportingLogEvent $event): void
     {
 
