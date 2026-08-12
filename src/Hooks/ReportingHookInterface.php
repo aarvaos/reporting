@@ -23,13 +23,9 @@ interface ReportingHookInterface
      */
     public function shouldHook(ReportingLogEvent $event): bool;
 
-    /**
-     * Handler called before the log is actually added to the report.
-     */
+    /** Handler called before the log is actually added to the report. */
     public function beforeReporting(BeforeReportingLogEvent $event): void;
 
-    /**
-     * Handler called after the log has been actually added to the report.
-     */
+    /** Handler called after the log has been actually added to the report. */
     public function afterReporting(AfterReportingLogEvent $event): void;
 }

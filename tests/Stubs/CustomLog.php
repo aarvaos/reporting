@@ -4,10 +4,7 @@ namespace Aarvaos\Reporting\Tests\Stubs;
 
 use Aarvaos\Reporting\Log;
 
-/**
- * @template T
- * @extends Log<T>
- */
+/** @extends Log<string> */
 class CustomLog extends Log
 {
     public function __construct(

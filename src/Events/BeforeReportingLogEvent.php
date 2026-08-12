@@ -11,9 +11,7 @@ class BeforeReportingLogEvent extends ReportingLogEvent
 {
     private bool $cancel = false;
 
-    /**
-     * Tell the report firing this event to cancel the recording of the log.
-     */
+    /** Tell the report firing this event to cancel the recording of the log. */
     final public function cancel(): void
     {
 
@@ -21,9 +19,7 @@ class BeforeReportingLogEvent extends ReportingLogEvent
 
     }
 
-    /**
-     * Check if the recording of the log in the report have been told to be canceled.
-     */
+    /** Check if the recording of the log in the report have been told to be canceled. */
     final public function isCancelled(): bool
     {
 
