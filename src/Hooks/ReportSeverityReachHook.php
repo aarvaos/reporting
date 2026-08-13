@@ -58,6 +58,5 @@ class ReportSeverityReachHook extends AbstractCallbackHookReporting
 
         return $this->reached;
 
-
     }
 }
