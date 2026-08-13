@@ -8,7 +8,7 @@ namespace Aarvaos\Reporting;
  * Base log entry as an element at an arbitrary level.
  *
  * @author Corentin FIEUX <aarvaos@gmail.com>
- * @template-covariant T = mixed
+ * @template-covariant T
  */
 class Log
 {

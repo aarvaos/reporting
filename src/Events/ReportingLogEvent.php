@@ -16,10 +16,10 @@ use Aarvaos\Reporting\Report;
 class ReportingLogEvent
 {
     /**
-     * @param Log       $log                The log being reported.
-     * @param int       $initialSeverity    The current severity of the report before registration of the log.
-     * @param int       $finalSeverity      The expected severity of the report after registration of the log.
-     * @param TReport   $report             The report in which the log is being recorded.
+     * @param Log<mixed>    $log                The log being reported.
+     * @param int           $initialSeverity    The current severity of the report before registration of the log.
+     * @param int           $finalSeverity      The expected severity of the report after registration of the log.
+     * @param TReport       $report             The report in which the log is being recorded.
      */
     public function __construct(
         public readonly Log $log,
