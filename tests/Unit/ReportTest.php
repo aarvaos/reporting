@@ -923,7 +923,7 @@ class ReportTest extends TestCase
     {
 
         $report = (new Report(true))
-            ->addLog(new Log(2, 'message@3'))
+            ->addLog(new Log(2, 'message@2'))
             ->addLog(new Log(-2, 'message@-1'))
             ->addLog(new Log(0, 'message@0'));
 

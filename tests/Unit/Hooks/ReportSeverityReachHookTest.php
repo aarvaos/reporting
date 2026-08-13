@@ -246,7 +246,7 @@ class ReportSeverityReachHookTest extends TestCase
 
         $beforeA = $afterA = $beforeB = $afterB = false;
 
-        $report(6, 'message@8');
+        $report(6, 'message@6');
 
         /** @phpstan-ignore method.alreadyNarrowedType */
         $this->assertFalse($beforeA);
