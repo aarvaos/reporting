@@ -5,31 +5,23 @@ declare(strict_types=1);
 namespace Aarvaos\Reporting;
 
 /**
- * Collect reported messages at arbitrary levels.
+ * Collect reported elements at arbitrary levels.
  *
  * @author Corentin FIEUX <aarvaos@gmail.com>
- * @implements \IteratorAggregate<Log>
+ * @implements \IteratorAggregate<Log<mixed>>
  */
 class Report implements \Countable, \IteratorAggregate
 {
-    /**
-     * Sort logs by stack order (default).
-     */
+    /** Sort logs by stack order (default). */
     public const SORT_LOGGED = 0;
 
-    /**
-     * Sort logs by ascending severity (from less severe to more severe).
-     */
+    /** Sort logs by ascending severity (from less severe to more severe). */
     public const SORT_SEVERITY_ASC = 1;
 
-    /**
-     * Sort logs by descending severity (high severity first, low severity last).
-     */
+    /** Sort logs by descending severity (high severity first, low severity last). */
     public const SORT_SEVERITY_DESC = -1;
 
-    /**
-     * @var Log<mixed>[]
-     */
+    /** @var Log<mixed>[] */
     private array $logs = [];
 
     /**
@@ -43,7 +35,7 @@ class Report implements \Countable, \IteratorAggregate
      * @param bool $reverseSeverity (optional) Whether severity is descending (severe at lowest level) instead of ascending (severe at highest level).
      */
     public function __construct(
-        protected bool $reverseSeverity = false
+        private bool $reverseSeverity = false
     ) {
     }
 
@@ -69,22 +61,36 @@ class Report implements \Countable, \IteratorAggregate
     /**
      * Register a new log.
      *
-     * @param Log<mixed> $log The log entry object to append to the Report.
+     * @param Log<mixed> $log The log entry object to append to the report.
      * @return static Current Report for chaining.
      */
     public function addLog(Log $log): static
     {
 
-        $this->doRecordLog($log);
+        $this->doReportLog($log);
 
         return $this;
 
     }
 
     /**
+     * Perform the actual operation of adding a log to the report.
+     *
+     * {@internal Must be called to register every log!}
      * @param Log<mixed> $log
      */
-    final protected function doRecordLog(Log $log): void
+    protected function doReportLog(Log $log): void
+    {
+
+        $this->_doRecordLog($log);
+
+    }
+
+    /**
+     * @internal
+     * @param Log<mixed> $log
+     */
+    private function _doRecordLog(Log $log): void
     {
         $this->index[$log->level][] = $this->logs[] = $log;
     }
@@ -103,12 +109,16 @@ class Report implements \Countable, \IteratorAggregate
 
     public function getMaxLevel(): ?int
     {
-        return $this->index ? max(array_keys($this->index)) : null;
+        return $this->index
+            ? max(array_keys($this->index))
+            : null;
     }
 
     public function getMinLevel(): ?int
     {
-        return $this->index ? min(array_keys($this->index)) : null;
+        return $this->index
+            ? min(array_keys($this->index))
+            : null;
     }
 
     /**
@@ -118,14 +128,16 @@ class Report implements \Countable, \IteratorAggregate
      */
     public function getSeverity(): ?int
     {
-        return $this->reverseSeverity ? $this->getMinLevel() : $this->getMaxLevel();
+        return $this->reverseSeverity
+            ? $this->getMinLevel()
+            : $this->getMaxLevel();
     }
 
     /**
-     * Check if the severity of the Report is at or beyond the threshold mark.
+     * Check if the severity of the report is at or beyond the threshold mark.
      *
      * @param int   $threshold  The log level at which the report is considered to have reached the targeted severity.
-     * @param bool  $excluded   (optional) Whether a Report exactly at the threshold should not be considered as reached (> instead of >=).
+     * @param bool  $excluded   (optional) Whether a report exactly at the threshold should not be considered as reached (> instead of >=).
      * @return bool|null The severity has reached threshold, or null if no log have been reported.
      */
     public function hasSeverityReached(int $threshold, bool $excluded = false): ?bool
@@ -140,10 +152,22 @@ class Report implements \Countable, \IteratorAggregate
 
         if ($this->reverseSeverity) {
 
-            return $excluded ? $severity < $threshold : $severity <= $threshold;
+            return $excluded
+                ? $severity < $threshold
+                : $severity <= $threshold;
         }
 
-        return $excluded ? $severity > $threshold : $severity >= $threshold;
+        return $excluded
+            ? $severity > $threshold
+            : $severity >= $threshold;
+
+    }
+
+    /** Tells if the severity behave as the higher the more severe (traditionnal) or the lower the more severe (reversed). */
+    final public function isSeverityReversed(): bool
+    {
+
+        return $this->reverseSeverity;
 
     }
 
@@ -228,7 +252,11 @@ class Report implements \Countable, \IteratorAggregate
 
         if ($sort) {
 
-            if ($this->reverseSeverity ? $sort < 0 : $sort > 0) {
+            if (
+                $this->reverseSeverity
+                    ? $sort < 0
+                    : $sort > 0
+            ) {
 
                 uasort($logs, static fn (Log $a, Log $b) => $a->level <=> $b->level);
 
@@ -241,13 +269,23 @@ class Report implements \Countable, \IteratorAggregate
 
         foreach ($logs as $rank => $log) {
 
-            $isOverAbove = $above === null || ($in_above ? $log->level >= $above : $log->level > $above);
-            $isUnderBelow = $below === null || ($in_below ? $log->level <= $below : $log->level < $below);
+            $isOverAbove = $above === null
+                || (
+                    $in_above
+                        ? $log->level >= $above
+                        : $log->level > $above
+                );
+            $isUnderBelow = $below === null
+                || (
+                    $in_below
+                        ? $log->level <= $below
+                        : $log->level < $below
+                );
 
             if (
-                $inversedInterval ?
-                $isOverAbove || $isUnderBelow :
-                $isOverAbove && $isUnderBelow
+                $inversedInterval
+                    ? $isOverAbove || $isUnderBelow
+                    : $isOverAbove && $isUnderBelow
             ) {
 
                 yield $rank => $log;
@@ -265,26 +303,28 @@ class Report implements \Countable, \IteratorAggregate
     }
 
     /**
-     * Use a report as a callback to ease its use.
+     * Use a Report as a callback to ease its use.
      * The operation depends on the number and type of parameters :
      * - 0: get current severity,
      * - 1 integer: check if severity reached passed parameter,
      * - 1 Log / 2: store the log data.
      *
      * @param int|Log<mixed>    $log_level  (optional) Either the severity to check reaching (as an integer) ; or the level of the log to store / directly the Log object.
-     * @param string            $message    (optional) The message of the log to store.
-     * @return mixed Depending of the parameters:
+     * @param mixed             $payload    (optional) The additionnal data of the log to store.
+     * @return null|int|bool|static|Log<mixed> Depending of the parameters:
      *               - 0: the current severity as an integer or null if no logging have been performed yet,
-     *               - 1 integer: a boolean indicating whether the passed severity has been reached,
-     *               - 1 Log / 2: the curent Report instance for chaining.
-     * @throws \InvalidArgumentException on messing up the logging by passing both an instanciated log object and additionnal parameters.
+     *               - 1 integer: a boolean indicating whether the passed severity has been reached or null if the report is empty,
+     *               - 1 Log / 2: the curent Report instance for chaining or, if not passed as a Log object the newly created log.
+     * @throws \InvalidArgumentException on messing up the logging by passing both an instanciated Log object and additionnal parameters.
      * @see Report::getSeverity()
      * @see Report::hasSeverityReached()
      * @see Report::log()
+     * @see Report::addLog()
      */
-    public function __invoke(int|Log $log_level = 0, string $message = ''): mixed
+    public function __invoke(int|Log $log_level = 0, mixed $payload = null): null|int|bool|static|Log
     {
 
+        /** @var non-negative-int */
         $mode = func_num_args();
 
         if ($log_level instanceof Log && $mode > 1) {
@@ -297,11 +337,13 @@ class Report implements \Countable, \IteratorAggregate
             case 0:
                 return $this->getSeverity();
             case 1:
-                return $log_level instanceof Log ? $this->addLog($log_level) : $this->hasSeverityReached($log_level);
+                return $log_level instanceof Log
+                    ? $this->addLog($log_level)
+                    : $this->hasSeverityReached($log_level);
             case 2:
             default:
                 /** @var int $log_level */
-                return $this->log($log_level, $message);
+                return $this->log($log_level, $payload);
         }
 
     }

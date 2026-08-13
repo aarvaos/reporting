@@ -1,19 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Aarvaos\Reporting;
 
 /**
  * Base log entry as an element at an arbitrary level.
  *
- * @template T
+ * @author Corentin FIEUX <aarvaos@gmail.com>
+ * @template-covariant T
  */
 class Log
 {
-    /**
-     * @var T The embeded element's data (can be of any type).
-     */
+    /** @var T */
     private readonly mixed $payload;
 
+    /** @param T $payload The embeded element's data (can be of any type). */
     public function __construct(
         public readonly int $level,
         mixed $payload,
@@ -23,9 +25,7 @@ class Log
 
     }
 
-    /**
-     * @return T The data of the element logged.
-     */
+    /** @return T The data of the element logged. */
     final public function getPayload(): mixed
     {
         return $this->payload;

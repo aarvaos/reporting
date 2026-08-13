@@ -14,11 +14,16 @@ return (new PhpCsFixer\Config())
         ],
         'no_unused_imports' => true,
         'no_unneeded_import_alias' => true,
+        'align_multiline_comment' => true,
 
         // Spacing
         // 'no_blank_lines_after_class_opening' => false,
-        'whitespace_after_comma_in_array' => true,
-        'object_operator_without_whitespace' => true,
+        'binary_operator_spaces' => true,  // $a= 1  + $b^ $d !==  $e or   $f; ==> $a = 1 + $b ^ $d !== $e or $f;
+        'whitespace_after_comma_in_array' => true, // [1,2, 3,  4,    5] ==> [1, 2, 3, 4, 5]
+        'no_singleline_whitespace_before_semicolons' => true, // $this->foo() ; ==> $this->foo();
+        'object_operator_without_whitespace' => true, // $a  ->  b; ==> $a->b;
+        'single_space_around_construct' => true, // $a  ->  b; ==> $a->b;
+        'ternary_operator_spaces' => true, // return    true; ==> return true;
         'class_attributes_separation' => [
             'elements' => [
                 'method' => 'one',

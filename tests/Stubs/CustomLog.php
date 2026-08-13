@@ -4,12 +4,10 @@ namespace Aarvaos\Reporting\Tests\Stubs;
 
 use Aarvaos\Reporting\Log;
 
-/**
- * @template T
- * @extends Log<T>
- */
+/** @extends Log<string> */
 class CustomLog extends Log
 {
+    /** @param mixed[]|null $data */
     public function __construct(
         string $message,
         int $level,
@@ -30,6 +28,7 @@ class CustomLog extends Log
         return $this->source;
     }
 
+    /** @return mixed[]|null */
     public function getData(): ?array
     {
         return $this->data;

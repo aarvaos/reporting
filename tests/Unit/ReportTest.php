@@ -42,7 +42,7 @@ class ReportTest extends TestCase
 
         $logs[] = new Log(-11, 'Bonjour');
         $report->addLog(end($logs));
-        $logs[] =  new CustomLog('', 0, 'CF***x', 'IDE', ['version' => '0.9-alpha', 'id' => .9]);
+        $logs[] = new CustomLog('', 0, 'CF***x', 'IDE', ['version' => '0.9-alpha', 'id' => .9]);
         $report->addLog(end($logs));
 
         $this->assertSame(5, $report->countLogs());
@@ -923,7 +923,7 @@ class ReportTest extends TestCase
     {
 
         $report = (new Report(true))
-            ->addLog(new Log(2, 'message@3'))
+            ->addLog(new Log(2, 'message@2'))
             ->addLog(new Log(-2, 'message@-1'))
             ->addLog(new Log(0, 'message@0'));
 
@@ -945,7 +945,7 @@ class ReportTest extends TestCase
         $report(new Log(-1, 'message@-1'));
         $report(new CustomLog('message@0', 0, 'CF***x'));
 
-        /** @var CustomLog<string> $log0 */
+        /** @var CustomLog $log0 */
         $log0 = $report->getLogs(0)[0];
 
         $this->assertSame(-1, $report());
@@ -978,7 +978,6 @@ class ReportTest extends TestCase
 
         $iterated = [];
 
-        /** @var Log<mixed> $log */
         foreach ($report as $log) {
 
             $iterated[$log->level] = [$log, $log->getPayload()];
