@@ -283,9 +283,9 @@ class Report implements \Countable, \IteratorAggregate
                 );
 
             if (
-                $inversedInterval ?
-                    $isOverAbove || $isUnderBelow :
-                    $isOverAbove && $isUnderBelow
+                $inversedInterval
+                    ? $isOverAbove || $isUnderBelow
+                    : $isOverAbove && $isUnderBelow
             ) {
 
                 yield $rank => $log;
