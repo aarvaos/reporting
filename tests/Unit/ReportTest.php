@@ -945,7 +945,7 @@ class ReportTest extends TestCase
         $report(new Log(-1, 'message@-1'));
         $report(new CustomLog('message@0', 0, 'CF***x'));
 
-        /** @var CustomLog<string> $log0 */
+        /** @var CustomLog $log0 */
         $log0 = $report->getLogs(0)[0];
 
         $this->assertSame(-1, $report());
@@ -978,7 +978,6 @@ class ReportTest extends TestCase
 
         $iterated = [];
 
-        /** @var Log<mixed> $log */
         foreach ($report as $log) {
 
             $iterated[$log->level] = [$log, $log->getPayload()];

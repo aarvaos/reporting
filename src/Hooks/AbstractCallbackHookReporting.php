@@ -13,8 +13,8 @@ use Aarvaos\Reporting\Events\BeforeReportingLogEvent;
 abstract class AbstractCallbackHookReporting implements ReportingHookInterface
 {
     /**
-     * @param \Closure(BeforeReportingLogEvent): void|null  $before (optional) Callback executed before actually reporting the log ; it receives the corresponding event as argument.
-     * @param \Closure(AfterReportingLogEvent): void|null   $after  (optional) Callback executed after actually reporting the log ; it receives the corresponding event as argument.
+     * @param (\Closure(BeforeReportingLogEvent): void)|null    $before (optional) Callback executed before actually reporting the log ; it receives the corresponding event as argument.
+     * @param (\Closure(AfterReportingLogEvent): void)|null     $after  (optional) Callback executed after actually reporting the log ; it receives the corresponding event as argument.
      * @see ReportingHookInterface::beforeReporting()
      * @see ReportingHookInterface::afterReporting()
      */

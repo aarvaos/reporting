@@ -33,7 +33,7 @@ class HookableReport extends Report
     /**
      * Calculate the theorical severity after reporting a log without actually adding it.
      *
-     * @param Log<mixed> $log The log about to be added after which the severity will be calculated.
+     * @param Log $log The log about to be added after which the severity will be calculated.
      * @return int
      */
     protected function simulateSeverityAfter(Log $log): int

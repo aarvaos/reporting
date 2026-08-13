@@ -5,6 +5,7 @@ namespace Aarvaos\Reporting\Tests\Unit\Hooks;
 use Aarvaos\Reporting\Events\AfterReportingLogEvent;
 use Aarvaos\Reporting\HookableReport;
 use Aarvaos\Reporting\Hooks\ReportSeverityReachHook;
+use Aarvaos\Reporting\Log;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -386,13 +387,14 @@ class ReportSeverityReachHookTest extends TestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage($error_message);
 
-        $report = new HookableReport();
-
-        $report->registerHook(new ReportSeverityReachHook(10, after: static function (AfterReportingLogEvent $event): never {
-            throw new \RuntimeException($event->log->getPayload());
+        $report = (new HookableReport())
+        ->registerHook(new ReportSeverityReachHook(10, after: static function (AfterReportingLogEvent $event): never {
+            /** @var Log<string> $log */
+            $log = $event->log;
+            throw new \RuntimeException($log->getPayload(), $log->level);
         }));
 
-        $report(10, $error_message);
+        $report(new Log(10, $error_message));
 
     }
 }

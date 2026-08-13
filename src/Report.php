@@ -8,7 +8,7 @@ namespace Aarvaos\Reporting;
  * Collect reported elements at arbitrary levels.
  *
  * @author Corentin FIEUX <aarvaos@gmail.com>
- * @implements \IteratorAggregate<Log<mixed>>
+ * @implements \IteratorAggregate<Log>
  */
 class Report implements \Countable, \IteratorAggregate
 {
@@ -21,13 +21,13 @@ class Report implements \Countable, \IteratorAggregate
     /** Sort logs by descending severity (high severity first, low severity last). */
     public const SORT_SEVERITY_DESC = -1;
 
-    /** @var Log<mixed>[] */
+    /** @var Log[] */
     private array $logs = [];
 
     /**
      * Logs indexed by level (for optimization purpose).
      *
-     * @var array<int, Log<mixed>[]>
+     * @var array<int, Log[]>
      */
     private array $index = [];
 
@@ -44,7 +44,7 @@ class Report implements \Countable, \IteratorAggregate
      *
      * @param int   $level      An arbitrary level to report the element at.
      * @param mixed $payload    The data of the element to log.
-     * @return Log<mixed> The newly registered Log.
+     * @return Log The newly registered Log.
      * @see Report::addLog() For logging custom Log objects.
      */
     public function log(int $level, mixed $payload): Log
@@ -61,7 +61,7 @@ class Report implements \Countable, \IteratorAggregate
     /**
      * Register a new log.
      *
-     * @param Log<mixed> $log The log entry object to append to the report.
+     * @param Log $log The log entry object to append to the report.
      * @return static Current Report for chaining.
      */
     public function addLog(Log $log): static
@@ -77,7 +77,7 @@ class Report implements \Countable, \IteratorAggregate
      * Perform the actual operation of adding a log to the report.
      *
      * {@internal Must be called to register every log!}
-     * @param Log<mixed> $log
+     * @param Log $log
      */
     protected function doReportLog(Log $log): void
     {
@@ -88,7 +88,7 @@ class Report implements \Countable, \IteratorAggregate
 
     /**
      * @internal
-     * @param Log<mixed> $log
+     * @param Log $log
      */
     private function _doRecordLog(Log $log): void
     {
@@ -167,7 +167,7 @@ class Report implements \Countable, \IteratorAggregate
      * Get the reported logs.
      *
      * @param null|int|int[] $level Restrict the logs retrieved to the ones at the given level(s).
-     * @return Log<mixed>[]
+     * @return Log[]
      */
     public function getLogs(null|int|array $level = null): array
     {
@@ -227,7 +227,7 @@ class Report implements \Countable, \IteratorAggregate
      * @param int|null  $below      (optional) Provide only logs having severity under this threshold ; if both $above and $below are indicated with $below < $above, providing interval will be [~;$below[U]$above;~].
      * @param bool      $in_above   (optional) logs being equals to the $above boundary will also be provided.
      * @param bool      $in_below   (optional) logs being equals to the $below boundary will also be provided.
-     * @return \Generator<int, Log<mixed>> Logs where index is its rank in the log entries chart.
+     * @return \Generator<int, Log> Logs where index is its rank in the log entries chart.
      */
     public function iterateLogs(int $sort = self::SORT_LOGGED, ?int $above = null, ?int $below = null, bool $in_above = false, bool $in_below = false): \Generator
     {
@@ -288,7 +288,7 @@ class Report implements \Countable, \IteratorAggregate
 
     }
 
-    /** @return \Traversable<int, Log<mixed>> */
+    /** @return \Traversable<int, Log> */
     public function getIterator(): \Traversable
     {
         return $this->iterateLogs();
@@ -301,20 +301,22 @@ class Report implements \Countable, \IteratorAggregate
      * - 1 integer: check if severity reached passed parameter,
      * - 1 Log / 2: store the log data.
      *
-     * @param int|Log<mixed>    $log_level  (optional) Either the severity to check reaching (as an integer) ; or the level of the log to store / directly the Log object.
+     * @param int|Log    $log_level  (optional) Either the severity to check reaching (as an integer) ; or the level of the log to store / directly the Log object.
      * @param mixed             $payload    (optional) The additionnal data of the log to store.
-     * @return mixed Depending of the parameters:
+     * @return null|int|bool|static|Log Depending of the parameters:
      *               - 0: the current severity as an integer or null if no logging have been performed yet,
-     *               - 1 integer: a boolean indicating whether the passed severity has been reached,
-     *               - 1 Log / 2: the curent Report instance for chaining.
-     * @throws \InvalidArgumentException on messing up the logging by passing both an instanciated log object and additionnal parameters.
+     *               - 1 integer: a boolean indicating whether the passed severity has been reached or null if the report is empty,
+     *               - 1 Log / 2: the curent Report instance for chaining or, if not passed as a Log object the newly created log.
+     * @throws \InvalidArgumentException on messing up the logging by passing both an instanciated Log object and additionnal parameters.
      * @see Report::getSeverity()
      * @see Report::hasSeverityReached()
      * @see Report::log()
+     * @see Report::addLog()
      */
-    public function __invoke(int|Log $log_level = 0, mixed $payload = ''): mixed
+    public function __invoke(int|Log $log_level = 0, mixed $payload = null): null|int|bool|static|Log
     {
 
+        /** @var non-negative-int */
         $mode = func_num_args();
 
         if ($log_level instanceof Log && $mode > 1) {
