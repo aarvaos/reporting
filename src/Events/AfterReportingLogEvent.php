@@ -7,6 +7,6 @@ namespace Aarvaos\Reporting\Events;
  *
  * @author Corentin FIEUX <aarvaos@gmail.com>
  */
-class AfterReportingLogEvent extends ReportingLogEvent
+class AfterReportingLogEvent extends HookReportingLogEvent
 {
 }

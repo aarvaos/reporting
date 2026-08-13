@@ -23,15 +23,15 @@ class ReportSeverityReachHookTest extends TestCase
         $after = null;
 
         $report = (new HookableReport())
-        ->registerHook(new ReportSeverityReachHook(
-            7,
-            static function () use (&$before): void {
-                $before = true;
-            },
-            static function () use (&$after): void {
-                $after = true;
-            }
-        ));
+            ->registerHook(new ReportSeverityReachHook(
+                7,
+                static function () use (&$before): void {
+                    $before = true;
+                },
+                static function () use (&$after): void {
+                    $after = true;
+                }
+            ));
 
         $before = $after = false;
 
@@ -90,25 +90,24 @@ class ReportSeverityReachHookTest extends TestCase
         $afterB = null;
 
         $report = (new HookableReport())
-        ->registerHook(new ReportSeverityReachHook(
-            7,
-            static function () use (&$beforeA): void {
-                $beforeA = true;
-            },
-            static function () use (&$afterA): void {
-                $afterA = true;
-            }
-        ))
-        ->registerHook(new ReportSeverityReachHook(
-            7,
-            static function () use (&$beforeB): void {
-                $beforeB = true;
-            },
-            static function () use (&$afterB): void {
-                $afterB = true;
-            }
-        ))
-        ;
+            ->registerHook(new ReportSeverityReachHook(
+                7,
+                static function () use (&$beforeA): void {
+                    $beforeA = true;
+                },
+                static function () use (&$afterA): void {
+                    $afterA = true;
+                }
+            ))
+            ->registerHook(new ReportSeverityReachHook(
+                7,
+                static function () use (&$beforeB): void {
+                    $beforeB = true;
+                },
+                static function () use (&$afterB): void {
+                    $afterB = true;
+                }
+            ));
 
         $beforeA = $afterA = $beforeB = $afterB = false;
 
@@ -167,24 +166,24 @@ class ReportSeverityReachHookTest extends TestCase
         $afterB = null;
 
         $report = (new HookableReport())
-        ->registerHook(new ReportSeverityReachHook(
-            7,
-            static function () use (&$beforeA): void {
-                $beforeA = true;
-            },
-            static function () use (&$afterA): void {
-                $afterA = true;
-            }
-        ))
-        ->registerHook(new ReportSeverityReachHook(
-            8,
-            static function () use (&$beforeB): void {
-                $beforeB = true;
-            },
-            static function () use (&$afterB): void {
-                $afterB = true;
-            }
-        ));
+            ->registerHook(new ReportSeverityReachHook(
+                7,
+                static function () use (&$beforeA): void {
+                    $beforeA = true;
+                },
+                static function () use (&$afterA): void {
+                    $afterA = true;
+                }
+            ))
+            ->registerHook(new ReportSeverityReachHook(
+                8,
+                static function () use (&$beforeB): void {
+                    $beforeB = true;
+                },
+                static function () use (&$afterB): void {
+                    $afterB = true;
+                }
+            ));
 
         $beforeA = $afterA = $beforeB = $afterB = false;
 
@@ -226,24 +225,24 @@ class ReportSeverityReachHookTest extends TestCase
         $this->assertTrue($afterB);
 
         $report = (new HookableReport())
-              ->registerHook(new ReportSeverityReachHook(
-                  7,
-                  static function () use (&$beforeA): void {
-                      $beforeA = true;
-                  },
-                  static function () use (&$afterA): void {
-                      $afterA = true;
-                  }
-              ))
-              ->registerHook(new ReportSeverityReachHook(
-                  8,
-                  static function () use (&$beforeB): void {
-                      $beforeB = true;
-                  },
-                  static function () use (&$afterB): void {
-                      $afterB = true;
-                  }
-              ));
+            ->registerHook(new ReportSeverityReachHook(
+                7,
+                static function () use (&$beforeA): void {
+                    $beforeA = true;
+                },
+                static function () use (&$afterA): void {
+                    $afterA = true;
+                }
+            ))
+            ->registerHook(new ReportSeverityReachHook(
+                8,
+                static function () use (&$beforeB): void {
+                    $beforeB = true;
+                },
+                static function () use (&$afterB): void {
+                    $afterB = true;
+                }
+            ));
 
         $beforeA = $afterA = $beforeB = $afterB = false;
 
@@ -277,42 +276,34 @@ class ReportSeverityReachHookTest extends TestCase
 
         /** @var bool|null $before */
         $before = null;
-        /** @var bool|null $after */
-        $after = null;
 
         $report = (new HookableReport())
-        ->registerHook(new ReportSeverityReachHook(
-            7,
-            static function () use (&$before): void {
-                $before = true;
-            },
-            excluded: true
-        ));
+            ->registerHook(new ReportSeverityReachHook(
+                7,
+                static function () use (&$before): void {
+                    $before = true;
+                },
+                excluded: true
+            ));
 
-        $before = $after = false;
+        $before = false;
 
         $report(7, 'message@7');
 
         /** @phpstan-ignore method.alreadyNarrowedType */
         $this->assertFalse($before);
-        /** @phpstan-ignore method.alreadyNarrowedType */
-        $this->assertFalse($after);
 
         $report(8, 'message@8');
 
         /** @phpstan-ignore method.impossibleType */
         $this->assertTrue($before);
-        /** @phpstan-ignore method.impossibleType */
-        $this->assertTrue($after);
 
-        $before = $after = false;
+        $before = false;
 
         $report(9, 'message@9');
 
         /** @phpstan-ignore method.alreadyNarrowedType */
         $this->assertFalse($before);
-        /** @phpstan-ignore method.alreadyNarrowedType */
-        $this->assertFalse($after);
 
     }
 
@@ -322,59 +313,48 @@ class ReportSeverityReachHookTest extends TestCase
 
         /** @var bool|null $before */
         $before = null;
-        /** @var bool|null $after */
-        $after = null;
 
         $report = (new HookableReport(true))
-        ->registerHook(new ReportSeverityReachHook(
-            7,
-            static function () use (&$before): void {
-                $before = true;
-            },
-            excluded: true
-        ));
+            ->registerHook(new ReportSeverityReachHook(
+                7,
+                static function () use (&$before): void {
+                    $before = true;
+                },
+            ));
 
-        $before = $after = false;
+        $before = false;
 
         $report(100, 'message@100');
         $report(8, 'message@8');
 
         /** @phpstan-ignore method.alreadyNarrowedType */
         $this->assertFalse($before);
-        /** @phpstan-ignore method.alreadyNarrowedType */
-        $this->assertFalse($after);
 
         $report(7, 'message@7');
 
         /** @phpstan-ignore method.impossibleType */
         $this->assertTrue($before);
-        /** @phpstan-ignore method.impossibleType */
-        $this->assertTrue($after);
 
         $report = (new HookableReport(true))
-                ->registerHook(new ReportSeverityReachHook(
-                    7,
-                    static function () use (&$before): void {
-                        $before = true;
-                    },
-                    excluded: true
-                ));
+            ->registerHook(new ReportSeverityReachHook(
+                7,
+                static function () use (&$before): void {
+                    $before = true;
+                },
+                excluded: true
+            ));
 
-        $before = $after = false;
+        $before = false;
 
         $report(9, 'message@9');
 
         /** @phpstan-ignore method.alreadyNarrowedType */
         $this->assertFalse($before);
-        /** @phpstan-ignore method.alreadyNarrowedType */
-        $this->assertFalse($after);
 
         $report(6, 'message@6');
 
         /** @phpstan-ignore method.impossibleType */
         $this->assertTrue($before);
-        /** @phpstan-ignore method.impossibleType */
-        $this->assertTrue($after);
 
     }
 
@@ -388,11 +368,11 @@ class ReportSeverityReachHookTest extends TestCase
         $this->expectExceptionMessage($error_message);
 
         $report = (new HookableReport())
-        ->registerHook(new ReportSeverityReachHook(10, after: static function (AfterReportingLogEvent $event): never {
-            /** @var Log<string> $log */
-            $log = $event->log;
-            throw new \RuntimeException($log->getPayload(), $log->level);
-        }));
+            ->registerHook(new ReportSeverityReachHook(10, after: static function (AfterReportingLogEvent $event): never {
+                /** @var Log<string> $log */
+                $log = $event->log;
+                throw new \RuntimeException($log->getPayload(), $log->level);
+            }));
 
         $report(new Log(10, $error_message));
 

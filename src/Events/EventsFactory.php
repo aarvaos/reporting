@@ -10,17 +10,17 @@ namespace Aarvaos\Reporting\Events;
  */
 class EventsFactory
 {
-    public static function beforeFromReportingLog(ReportingLogEvent $event): BeforeReportingLogEvent
+    public static function beforeFromHookReportingLog(HookReportingLogEvent $event): BeforeReportingLogEvent
     {
 
-        return new BeforeReportingLogEvent($event->log, $event->initialSeverity, $event->finalSeverity, $event->report);
+        return new BeforeReportingLogEvent($event->log, $event->initialSeverity, $event->finalSeverity, $event->getHookableReport());
 
     }
 
-    public static function afterFromReportingLog(ReportingLogEvent $event): AfterReportingLogEvent
+    public static function afterFromHookReportingLog(HookReportingLogEvent $event): AfterReportingLogEvent
     {
 
-        return new AfterReportingLogEvent($event->log, $event->initialSeverity, $event->finalSeverity, $event->report);
+        return new AfterReportingLogEvent($event->log, $event->initialSeverity, $event->finalSeverity, $event->getHookableReport());
 
     }
 }

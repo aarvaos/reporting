@@ -7,7 +7,7 @@ namespace Aarvaos\Reporting\Events;
  *
  * @author Corentin FIEUX <aarvaos@gmail.com>
  */
-class BeforeReportingLogEvent extends ReportingLogEvent
+class BeforeReportingLogEvent extends HookReportingLogEvent
 {
     private bool $cancel = false;
 

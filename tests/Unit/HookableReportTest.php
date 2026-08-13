@@ -5,17 +5,21 @@ namespace Aarvaos\Reporting\Tests\Unit;
 use Aarvaos\Reporting\Events\AfterReportingLogEvent;
 use Aarvaos\Reporting\Events\BeforeReportingLogEvent;
 use Aarvaos\Reporting\Events\EventsFactory;
+use Aarvaos\Reporting\Events\HookReportingLogEvent;
 use Aarvaos\Reporting\Events\ReportingLogEvent;
 use Aarvaos\Reporting\HookableReport;
 use Aarvaos\Reporting\Hooks\AbstractCallbackHookReporting;
 use Aarvaos\Reporting\Log;
+use Aarvaos\Reporting\Report;
 use Aarvaos\Reporting\Tests\Stubs\BasicHook;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(HookableReport::class)]
+#[CoversClass(Report::class)]
 #[CoversClass(ReportingLogEvent::class)]
+#[CoversClass(HookReportingLogEvent::class)]
 #[CoversClass(BeforeReportingLogEvent::class)]
 #[CoversClass(AfterReportingLogEvent::class)]
 #[CoversClass(EventsFactory::class)]
@@ -191,24 +195,24 @@ class HookableReportTest extends TestCase
         $after = $before = 0;
 
         $report = (new HookableReport())
-        ->registerHook(new BasicHook(
-            static function (BeforeReportingLogEvent $event) use (&$before): void {
-                ++$before;
-                $event->cancel();
-            },
-            static function () use (&$after): void {
-                ++$after;
-            },
-        ))
-        ->registerHook(new BasicHook(
-            function (BeforeReportingLogEvent $event) use (&$before): void {
-                ++$before;
-                $this->assertTrue($event->isCancelled());
-            },
-            static function () use (&$after): void {
-                ++$after;
-            },
-        ));
+            ->registerHook(new BasicHook(
+                static function (BeforeReportingLogEvent $event) use (&$before): void {
+                    ++$before;
+                    $event->cancel();
+                },
+                static function () use (&$after): void {
+                    ++$after;
+                },
+            ))
+            ->registerHook(new BasicHook(
+                function (BeforeReportingLogEvent $event) use (&$before): void {
+                    ++$before;
+                    $this->assertTrue($event->isCancelled());
+                },
+                static function () use (&$after): void {
+                    ++$after;
+                },
+            ));
 
         $report->log(0, 'message');
 

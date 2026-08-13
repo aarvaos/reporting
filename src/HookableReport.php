@@ -3,7 +3,7 @@
 namespace Aarvaos\Reporting;
 
 use Aarvaos\Reporting\Events\EventsFactory;
-use Aarvaos\Reporting\Events\ReportingLogEvent;
+use Aarvaos\Reporting\Events\HookReportingLogEvent;
 use Aarvaos\Reporting\Hooks\ReportingHookInterface;
 
 /**
@@ -39,7 +39,7 @@ class HookableReport extends Report
     protected function simulateSeverityAfter(Log $log): int
     {
 
-        if ($this->reverseSeverity) {
+        if ($this->isSeverityReversed()) {
 
             $severity = $this->getMinLevel();
 
@@ -57,7 +57,7 @@ class HookableReport extends Report
     protected function doReportLog(Log $log): void
     {
 
-        $event = new ReportingLogEvent($log, $this->getSeverity(), $this->simulateSeverityAfter($log), $this);
+        $event = new HookReportingLogEvent($log, $this->getSeverity(), $this->simulateSeverityAfter($log), $this);
 
         $hooks = array_filter($this->hooks, function (ReportingHookInterface $hook) use ($event): bool {
 
@@ -65,7 +65,7 @@ class HookableReport extends Report
 
         });
 
-        $beforeEvent = EventsFactory::beforeFromReportingLog($event);
+        $beforeEvent = EventsFactory::beforeFromHookReportingLog($event);
 
         foreach ($hooks as $hook) {
 
@@ -81,7 +81,7 @@ class HookableReport extends Report
 
         parent::doReportLog($log);
 
-        $afterEvent = EventsFactory::afterFromReportingLog($event);
+        $afterEvent = EventsFactory::afterFromHookReportingLog($event);
 
         foreach ($hooks as $hook) {
 

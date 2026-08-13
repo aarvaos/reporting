@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Aarvaos\Reporting\Hooks;
 
-use Aarvaos\Reporting\Events\ReportingLogEvent;
+use Aarvaos\Reporting\Events\HookReportingLogEvent;
 
 /**
  * Hook all logs at a given level.
@@ -25,7 +25,7 @@ class LogLevelHook extends AbstractCallbackHookReporting
     }
 
     // #[\Override]
-    public function shouldHook(ReportingLogEvent $event): bool
+    public function shouldHook(HookReportingLogEvent $event): bool
     {
 
         return $event->log->level === $this->level;

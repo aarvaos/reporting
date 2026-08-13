@@ -35,7 +35,7 @@ class Report implements \Countable, \IteratorAggregate
      * @param bool $reverseSeverity (optional) Whether severity is descending (severe at lowest level) instead of ascending (severe at highest level).
      */
     public function __construct(
-        protected bool $reverseSeverity = false
+        private bool $reverseSeverity = false
     ) {
     }
 
@@ -160,6 +160,14 @@ class Report implements \Countable, \IteratorAggregate
         return $excluded
             ? $severity > $threshold
             : $severity >= $threshold;
+
+    }
+
+    /** Tells if the severity behave as the higher the more severe (traditionnal) or the lower the more severe (reversed). */
+    final public function isSeverityReversed(): bool
+    {
+
+        return $this->reverseSeverity;
 
     }
 
