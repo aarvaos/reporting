@@ -30,12 +30,18 @@ jobs:
 
     strategy:
       matrix:
-        php-version:
-          - '8.1'
-          - '8.2'
-          - '8.3'
-          - '8.4'
-          - '8.5'
+        - 
+          php-version: '8.1'
+          summary: true
+        - 
+          php-version: '8.2'
+        - 
+          php-version: '8.3'
+        - 
+          php-version: '8.4'
+        - 
+          php-version: '8.5'
+          summary: true
 
     steps:
 
@@ -84,7 +90,7 @@ jobs:
           path: coverage.xml
 
       - name: Add summary
-        if: always() && (matrix.php-version == '8.1' || matrix.php-version == '8.5')
+        if: always() && matrix.summary == true
         shell: bash
         run: |
           {
