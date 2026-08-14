@@ -68,7 +68,7 @@ foreach($report->iterateLogs(\Aarvaos\Reporting\Report::SORT_SEVERITY_ASC, below
 ### Hooks
 
 Also you may hook log reporting for special treatments ; simply use the special Report class `\Aarvaos\Reporting\HookableReport` and use the method `::registerHook()` passing the appropriate hook for your needs.
-You have various hooks classes allowing to handle multiple log reporting contexts within `\Aarvaos\Reporting\Hooks\...`.
+You have various hooks classes allowing to handle multiple log reporting contexts within `\Aarvaos\Reporting\Hooks\…`.
 
 *e.g. throwing exception on reaching certain severity level :*
 
