@@ -30,18 +30,19 @@ jobs:
 
     strategy:
       matrix:
-        - 
-          php-version: '8.1'
-          summary: true
-        - 
-          php-version: '8.2'
-        - 
-          php-version: '8.3'
-        - 
-          php-version: '8.4'
-        - 
-          php-version: '8.5'
-          summary: true
+        include:
+          - 
+            php-version: '8.1'
+            summary: true
+          - 
+            php-version: '8.2'
+          - 
+            php-version: '8.3'
+          - 
+            php-version: '8.4'
+          - 
+            php-version: '8.5'
+            summary: true
 
     steps:
 
