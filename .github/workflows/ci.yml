@@ -30,12 +30,12 @@ jobs:
 
     strategy:
       matrix:
-        php-version: 
-        - '8.1'
-        - '8.2'
-        - '8.3'
-        - '8.4'
-        - '8.5'
+        php-version:
+          - '8.1'
+          - '8.2'
+          - '8.3'
+          - '8.4'
+          - '8.5'
 
     steps:
 
@@ -51,23 +51,57 @@ jobs:
         run: composer install --prefer-dist --no-progress
 
       - name: PHPUnit
+        shell: bash
         run: |
+          set -o pipefail
+
           vendor/bin/phpunit \
             --coverage-text \
             --coverage-clover coverage.xml \
-            --log-junit junit.xml
+            --log-junit junit.xml \
+            2>&1 | tee phpunit-output.txt
 
       - name: PHPStan
-        run: vendor/bin/phpstan analyse
+        shell: bash
+        run: |
+          set -o pipefail
+
+          vendor/bin/phpstan analyse \
+            2>&1 | tee phpstan-output.txt
 
       - name: Upload junit
+        if: always()
         uses: actions/upload-artifact@v7
         with:
           name: junit-${{ matrix.php-version }}
           path: junit.xml
 
       - name: Upload coverage
+        if: always()
         uses: actions/upload-artifact@v7
         with:
           name: coverage-${{ matrix.php-version }}
           path: coverage.xml
+
+      - name: Add summary
+        if: always() && (matrix.php-version == '8.1' || matrix.php-version == '8.5')
+        shell: bash
+        run: |
+          {
+            echo "# 🧪 PHP ${{ matrix.php-version }}"
+            echo
+
+            echo "## PHPUnit + Coverage"
+            echo
+            echo '```text'
+            cat phpunit-output.txt
+            echo '```'
+            echo
+
+            echo "## PHPStan"
+            echo
+            echo '```text'
+            cat phpstan-output.txt
+            echo '```'
+            echo
+          } >> "$GITHUB_STEP_SUMMARY"
