@@ -53,7 +53,7 @@ jobs:
       - name: PHPUnit
         run: |
           vendor/bin/phpunit \
-            --coverage-text
+            --coverage-text \
             --coverage-clover coverage.xml \
             --log-junit junit.xml
 
